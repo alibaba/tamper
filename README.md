@@ -11,22 +11,22 @@ author : agapple(jianghang115@gmail.com)
 ##Why need mapping
 
 这里列觉了几种需要使用mapping的场景
-# model 和 DO的转化 (DO = Data Object , 数据库对象的设计是一种大宽表的设计，domain/model的设计，会有层次结构&具体)。 比如表设计存储会采用json存储动态数据，而在model中会是具体的属性
-# model 和 VO的转化 (VO = View Object , 公司的产品detail页面，涉及了后端n多个domain/model的组合展示，这时候会进行包装成VO，包装一些页面组装逻辑)
-# model 和 DTO的转化 (DTO = Data Transfer Object ，公司子系统比较多，系统之间会有比较多的rpc等remote调用)
-# form -> bean的转化 (现在流行的几个MVC框架，都已经开始支持view层的参数注入，比如@Paramter(name="field")String , @Form("name=xx")Bean)。 提交的form表单数据，基本都是以map+list为主，就会涉及一个mapping
+* model 和 DO的转化 (DO = Data Object , 数据库对象的设计是一种大宽表的设计，domain/model的设计，会有层次结构&具体)。 比如表设计存储会采用json存储动态数据，而在model中会是具体的属性
+* model 和 VO的转化 (VO = View Object , 公司的产品detail页面，涉及了后端n多个domain/model的组合展示，这时候会进行包装成VO，包装一些页面组装逻辑)
+* model 和 DTO的转化 (DTO = Data Transfer Object ，公司子系统比较多，系统之间会有比较多的rpc等remote调用)
+* form -> bean的转化 (现在流行的几个MVC框架，都已经开始支持view层的参数注入，比如@Paramter(name="field")String , @Form("name=xx")Bean)。 提交的form表单数据，基本都是以map+list为主，就会涉及一个mapping
 
 ##Why BeanMapping
-# 解决BeanUtils, BeanCopier?使用上的局限，只能针对同名属性的拷贝
-# 相比于BeanUtils，性能提升是它的优势
-# 相比于BeanCopier，类型之间的convertor是它的优势
-# 支持插件方式的扩展，自身框架的设计也是基于插件扩展。
+* 解决BeanUtils, BeanCopier?使用上的局限，只能针对同名属性的拷贝
+* 相比于BeanUtils，性能提升是它的优势
+* 相比于BeanCopier，类型之间的convertor是它的优势
+* 支持插件方式的扩展，自身框架的设计也是基于插件扩展。
 
 ###目前的插件支持：
-# default value支持
-# convetor转换
-# script脚本支持 (EL表达式处理)
-# bean creator(嵌套对象自动创建)
+* default value支持
+* convetor转换
+* script脚本支持 (EL表达式处理)
+* bean creator(嵌套对象自动创建)
 
 ##Maven repository
 
