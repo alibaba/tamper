@@ -10,7 +10,8 @@ author : agapple(jianghang115@gmail.com)
 
 ##Why need mapping
 
-这里列觉了几种需要使用mapping的场景
+这里列觉了几种需要使用mapping的场景：
+
 * model 和 DO的转化 (DO = Data Object , 数据库对象的设计是一种大宽表的设计，domain/model的设计，会有层次结构&具体)。 比如表设计存储会采用json存储动态数据，而在model中会是具体的属性
 
 * model 和 VO的转化 (VO = View Object , 公司的产品detail页面，涉及了后端n多个domain/model的组合展示，这时候会进行包装成VO，包装一些页面组装逻辑)
