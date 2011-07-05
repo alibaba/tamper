@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!DOCTYPE log4j:configuration SYSTEM "http://toolkit.alibaba-inc.com/dtd/log4j/log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!-- ===================================================================== -->
+	<!--  以下是appender的定义                                                 -->
+	<!-- ===================================================================== -->
+	<appender name="PROJECT" class="org.apache.log4j.ConsoleAppender">
+		<param name="encoding" value="GBK"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%5p %c{2} - %m%n"/>
+		</layout>
+	</appender>
+	<!-- ===================================================================== -->
+	<!--  以下是logger的定义                                                   -->
+	<!-- ===================================================================== -->
+	<logger name="org.apache.commons">
+		<level value="ERROR"/>
+	</logger>
+	<logger name="java.sql">
+		<level value="ERROR"/>
+	</logger>
+	<!-- ===================================================================== -->
+	<!--  Root logger的定义                                                    -->
+	<!-- ===================================================================== -->
+	<root>
+		<level value="DEBUG"/>
+		<appender-ref ref="PROJECT"/>
+	</root>
+</log4j:configuration>

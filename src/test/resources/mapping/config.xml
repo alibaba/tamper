@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="GBK"?>
+<bean-mappings xmlns="http://mapping4java.googlecode.com/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://mapping4java.googlecode.com/schema/mapping http://mapping4java.googlecode.com/svn/trunk/src/main/resources/META-INF/mapping.xsd">
+    
+    <global-configurations debug="false" mappingNullValue="true" mappingEmptyStrings="true" trimStrings="true" />
+    
+    <convetors-configurations>
+    	<convertor alias="common" class="commonClass" />
+    </convetors-configurations>
+    
+    <class-alias-configurations>
+    	<classAlias alias="commonClass" class="com.agapple.mapping.process.convetor.CommonAndCommonConvertor$CommonToCommon" />
+    </class-alias-configurations>
+    
+    <function-class-configurations>
+    	<functionClass name="customFunction" class="com.agapple.mapping.script.CustomFunctionClass" />
+    </function-class-configurations>
+    
+    <bean-mapping srcClass="map" targetClass="java.util.HashMap" reversable="false" mappingNullValue="false" debug="true">
+    	<field-mapping srcName="id" srcClass="java.lang.String" targetName="id" targetClass="java.lang.String" defaultValue="0" convetor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
+    	<field-mapping srcName="name" srcLocatorClass="" targetName="id" targetClass="java.lang.String" defaultValue="0" convetor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
+    	<field-mapping mapping="true" srcName="model" targetName="model" mappingNullValue="true" trimStrings="true" />
+    </bean-mapping>
+</bean-mappings>

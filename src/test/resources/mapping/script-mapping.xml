@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="GBK"?>
+<bean-mappings xmlns="http://mapping4java.googlecode.com/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://mapping4java.googlecode.com/schema/mapping http://mapping4java.googlecode.com/svn/trunk/src/main/resources/META-INF/mapping.xsd">
+    <!--  bean script测试, map转化到object -->
+    <bean-mapping srcClass="com.agapple.mapping.object.SrcMappingObject" targetClass="map" debug="true">
+    	<field-mapping targetName="integerValue" script="src.integerValue" defaultValue="1" targetClass="int" />
+    	<field-mapping targetName="intValue" script="src.intValue + target.integerValue" />
+    	<field-mapping targetName="start" script="src.start"/>
+    	<field-mapping targetName="name" script="src.name"/> <!--  注意不同名 -->
+    	<field-mapping srcName="mapping" targetName="mapping" mapping="true" />
+    </bean-mapping>
+    
+    <bean-mapping srcClass="com.agapple.mapping.object.NestedSrcMappingObject" targetClass="map" debug="true">
+    	<field-mapping targetName="name" script="src.name" defaultValue="ljh" /> <!-- 测试default value -->
+    	<field-mapping targetName="value" script="src.bigDecimalValue" targetClass="string" defaultValue="10" /> <!-- 测试不同名+不同类型+default value  -->
+    </bean-mapping>
+    
+    <bean-mapping srcClass="map" targetClass="com.agapple.mapping.object.SrcMappingObject" debug="true">
+    	<field-mapping targetName="integerValue" script="src.integerValue" defaultValue="1"/>
+    	<field-mapping targetName="intValue" script="src.intValue + src.integerValue" />
+    	<field-mapping targetName="start" script="src.start"/>
+    	<field-mapping targetName="name" script="src.name"/> <!--  注意不同名 -->
+    	<field-mapping srcName="mapping" targetName="mapping" mapping="true" />
+    </bean-mapping>
+    
+    <bean-mapping srcClass="map" targetClass="com.agapple.mapping.object.NestedSrcMappingObject" debug="true">
+    	<field-mapping targetName="name" script="src.name" defaultValue="ljh" /> <!-- 测试default value -->
+    	<field-mapping targetName="bigDecimalValue" script="src.value" targetClass="string" defaultValue="10" /> <!-- 测试不同名+不同类型+default value  -->
+    </bean-mapping>
+    
+    <bean-mapping srcClass="map" targetClass="com.agapple.mapping.object.NestedTargetMappingObject">
+    	<field-mapping targetName="name" script="src.name" defaultValue="ljh" /> <!-- 测试default value -->
+    	<field-mapping targetName="value" script="src.value" targetClass="string" defaultValue="10" /> <!-- 测试不同名+不同类型+default value  -->
+    </bean-mapping>
+    
+</bean-mappings>
