@@ -2,10 +2,12 @@ package com.agapple.mapping;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -332,6 +334,71 @@ public class BeanMappingDymaicTest extends TestCase {
         assertEquals(dest.get(FOUR_OTHER).getClass(), NoMethodBean.class);
     }
 
+    @Test
+    public void testCollectionNestedMapping() { // 测试下collection的mapping
+        BeanMappingBuilder builder = new BeanMappingBuilder() {
+
+            protected void configure() {
+                behavior().debug(true).mappingEmptyStrings(false).mappingNullValue(false).trimStrings(true);// 设置行为
+                mapping(HashMap.class, HashMap.class);
+                fields(srcField(ONE),
+                       targetField(ONE_OTHER, ArrayList.class).componentClasses(NestedTargetMappingObject.class));
+                fields(srcField(TWO),
+                       targetField(TWO_OTHER, HashSet.class).componentClasses(NestedTargetMappingObject.class));
+                fields(srcField(THREE), targetField(THREE_OTHER, HashMap[].class).componentClasses(HashMap.class));
+            }
+
+        };
+        // 第二层mapping
+        BeanMappingBuilder nextNestedMapping = new BeanMappingBuilder() {
+
+            protected void configure() {
+                behavior().debug(true);// 设置行为
+                mapping(NestedSrcMappingObject.class, NestedTargetMappingObject.class);
+                fields(srcField("name"), targetField("name"));
+                fields(srcField("bigDecimalValue"), targetField("value"));
+            }
+
+        };
+
+        BeanMappingConfigHelper.getInstance().register(nextNestedMapping);
+
+        BeanMapping mapping = new BeanMapping(builder);
+        Map src = new HashMap();
+        HashMap[] mapArray = new HashMap[1];
+        Map arrayNested = new HashMap();
+        arrayNested.put("name", "ljh");
+        arrayNested.put("value", "10");
+        mapArray[0] = (HashMap) arrayNested;
+        src.put(ONE, mapArray);
+
+        List<NestedSrcMappingObject> objectList = new ArrayList<NestedSrcMappingObject>();
+        NestedSrcMappingObject listNested = new NestedSrcMappingObject();
+        listNested.setBigDecimalValue(BigDecimal.TEN);
+        listNested.setName("ljh");
+        objectList.add(listNested);
+        src.put(TWO, objectList);
+
+        Set<NestedSrcMappingObject> objectSet = new HashSet<NestedSrcMappingObject>();
+        NestedSrcMappingObject setNested = new NestedSrcMappingObject();
+        setNested.setBigDecimalValue(BigDecimal.TEN);
+        setNested.setName("ljh");
+        objectSet.add(listNested);
+        src.put(THREE, objectSet);
+
+        Map dest = new HashMap();
+        mapping.mapping(src, dest);
+        List<NestedTargetMappingObject> list = (List) dest.get(ONE_OTHER);
+        Set<NestedTargetMappingObject> set = (Set) dest.get(TWO_OTHER);
+        HashMap[] array = (HashMap[]) dest.get(THREE_OTHER);
+        assertEquals(list.get(0).getName(), "ljh");
+        assertEquals(list.get(0).getValue(), "10");
+        NestedTargetMappingObject obj = set.iterator().next();
+        assertEquals(obj.getName(), "ljh");
+        assertEquals(obj.getValue(), "10");
+        assertEquals(array[0].get("name"), "ljh");
+        assertEquals(array[0].get("bigDecimalValue"), BigDecimal.TEN);
+    }
 }
 
 class NoMethodBean {

@@ -44,7 +44,7 @@ public class ConvertorValueProcess implements ValueProcess {
                 // srcClass针对直接使用script的情况，会出现为空，这时候需要依赖value.getClass进行转化
                 // 优先不选择使用value.getClass()的原因：原生类型会返回对应的Object类型，导出会出现不必要的convetor转化
                 Class srcClass = currentField.getSrcField().getClazz();
-                if (srcClass == null) {
+                if (srcClass == null || srcClass.isPrimitive() == false) {
                     srcClass = value.getClass();
                 }
                 Class targetClass = currentField.getTargetField().getClazz();

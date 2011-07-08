@@ -11,7 +11,6 @@ public abstract class AbstractExecutor {
     protected AbstractExecutor(Class<?> theClass, String property){
         this.objectClass = theClass;
         this.property = property;
-
     }
 
     public abstract boolean isAlive();

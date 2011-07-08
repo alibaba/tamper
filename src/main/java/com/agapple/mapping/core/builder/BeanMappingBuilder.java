@@ -1,8 +1,3 @@
-/*
- * Copyright 1999-2004 Alibaba.com All right reserved. This software is the confidential and proprietary information of
- * Alibaba.com ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only
- * in accordance with the terms of the license agreement you entered into with Alibaba.com.
- */
 package com.agapple.mapping.core.builder;
 
 import com.agapple.mapping.core.BeanMappingException;
@@ -38,29 +33,29 @@ public class BeanMappingBuilder implements Builder<BeanMappingObject> {
         throw new BeanMappingException("should be implements");
     }
 
-    protected BeanMappingObjectBuilder mapping(Class srcClass, Class targetClass) {
+    public BeanMappingObjectBuilder mapping(Class srcClass, Class targetClass) {
         BeanMappingObjectBuilder builder = new BeanMappingObjectBuilder(srcClass, targetClass, global);
         object = builder.get();
         return builder;
     }
 
-    protected BeanMappingFieldBuilder fields(BeanMappingFieldAttributesBuilder srcFieldBuilder,
-                                             BeanMappingFieldAttributesBuilder targetFieldBuilder) {
+    public BeanMappingFieldBuilder fields(BeanMappingFieldAttributesBuilder srcFieldBuilder,
+                                          BeanMappingFieldAttributesBuilder targetFieldBuilder) {
         BeanMappingFieldBuilder fieldCriterion = new BeanMappingFieldBuilder(srcFieldBuilder, targetFieldBuilder,
                                                                              this.object.getBehavior());
         this.object.addBeanField(fieldCriterion.get());
         return fieldCriterion;
     }
 
-    protected BeanMappingBehaviorBuilder behavior() {
+    public BeanMappingBehaviorBuilder behavior() {
         BeanMappingBehaviorBuilder builder = new BeanMappingBehaviorBuilder();
         global = builder.get();
         return builder;
 
     }
 
-    protected BeanMappingBehaviorBuilder behavior(boolean debug, boolean mappingNullValue, boolean mappingEmptyStrings,
-                                                  boolean trimStrings) {
+    public BeanMappingBehaviorBuilder behavior(boolean debug, boolean mappingNullValue, boolean mappingEmptyStrings,
+                                               boolean trimStrings) {
         BeanMappingBehaviorBuilder builder = new BeanMappingBehaviorBuilder(debug, mappingNullValue,
                                                                             mappingEmptyStrings, trimStrings);
         global = builder.get();
@@ -68,19 +63,19 @@ public class BeanMappingBuilder implements Builder<BeanMappingObject> {
 
     }
 
-    protected BeanMappingFieldAttributesBuilder srcField(String name) {
+    public BeanMappingFieldAttributesBuilder srcField(String name) {
         return new BeanMappingFieldAttributesBuilder(name);
     }
 
-    protected BeanMappingFieldAttributesBuilder srcField(String name, Class clazz) {
+    public BeanMappingFieldAttributesBuilder srcField(String name, Class clazz) {
         return new BeanMappingFieldAttributesBuilder(name, clazz);
     }
 
-    protected BeanMappingFieldAttributesBuilder targetField(String name) {
+    public BeanMappingFieldAttributesBuilder targetField(String name) {
         return new BeanMappingFieldAttributesBuilder(name);
     }
 
-    protected BeanMappingFieldAttributesBuilder targetField(String name, Class clazz) {
+    public BeanMappingFieldAttributesBuilder targetField(String name, Class clazz) {
         return new BeanMappingFieldAttributesBuilder(name, clazz);
     }
 

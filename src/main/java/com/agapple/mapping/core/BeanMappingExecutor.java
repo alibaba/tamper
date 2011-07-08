@@ -16,6 +16,8 @@ import com.agapple.mapping.core.helper.BatchObjectHolder;
 import com.agapple.mapping.core.introspect.BatchExecutor;
 import com.agapple.mapping.core.introspect.GetExecutor;
 import com.agapple.mapping.core.introspect.MapSetExecutor;
+import com.agapple.mapping.core.introspect.PropertyGetExecutor;
+import com.agapple.mapping.core.introspect.PropertySetExecutor;
 import com.agapple.mapping.core.introspect.SetExecutor;
 import com.agapple.mapping.core.introspect.Uberspector;
 import com.agapple.mapping.core.process.ValueProcessContext;
@@ -98,12 +100,20 @@ public class BeanMappingExecutor {
             Class selfLocatorClass = beanField.getTargetField().getLocatorClass();
             if (selfLocatorClass != null && selfLocatorClass != locatorClass) {
                 config.setBatch(false);// 直接改写为false，发现locatorClass存在于不同的class
+                return null;
             }
 
             if (canBatch(beanField.getBehavior()) == false) {
                 config.setBatch(false);
                 return null;
             }
+
+            SetExecutor set = beanField.getSetExecutor();// 只针对property进行batch优化
+            if (set != null && (set instanceof PropertySetExecutor) == false) {
+                config.setBatch(false);
+                return null;
+            }
+
             // 搜集信息
             targetFields.add(targetField);
             targetArgs.add(targetArg);
@@ -150,6 +160,12 @@ public class BeanMappingExecutor {
             }
 
             if (canBatch(beanField.getBehavior()) == false) {
+                config.setBatch(false);
+                return null;
+            }
+
+            GetExecutor get = beanField.getGetExecutor();// 只针对property进行batch优化
+            if (get != null && (get instanceof PropertyGetExecutor) == false) {
                 config.setBatch(false);
                 return null;
             }
