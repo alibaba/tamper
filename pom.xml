@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.mapping4java</groupId>
 	<artifactId>mapping</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<name>mapping4java</name>
 	<url>http://code.google.com/p/mapping4java</url>
