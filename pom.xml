@@ -164,6 +164,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
 				<configuration>
 				  <encoding>${file_encoding}</encoding>
 				  <charset>${file_encoding}</charset>
@@ -178,10 +186,25 @@
 				  <version>true</version>
 				  <author>true</author>
 				  <keywords>true</keywords>
+				  <!--
 				  <outputDirectory>${project.basedir}/docs</outputDirectory>
 				  <reportOutputDirectory>${project.basedir}/docs</reportOutputDirectory>
 				  <destDir>javadoc</destDir>
+				  -->
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+					<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
