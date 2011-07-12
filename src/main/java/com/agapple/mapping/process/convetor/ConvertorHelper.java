@@ -26,15 +26,20 @@ public class ConvertorHelper {
     public static final String              ALIAS_STRING_TO_CALENDAR_TIME = StringAndDateConvertor.StringToCalendarTime.class.getSimpleName();
     public static final String              ALIAS_STRING_TO_CALENDAR_DAY  = StringAndDateConvertor.StringToCalendarDay.class.getSimpleName();
 
-    // ommon对象范围：8种Primitive和对应的Java类型，BigDecimal, BigInteger
+    // common对象范围：8种Primitive和对应的Java类型，BigDecimal, BigInteger
     private static Map<Class, Object>       commonTypes                   = new HashMap<Class, Object>();
     private static final Convertor          stringToCommon                = new StringAndCommonConvertor.StringToCommon();
     private static final Convertor          commonToCommon                = new CommonAndCommonConvertor.CommonToCommon();
+    // 数组处理
     private static final Convertor          arrayToArray                  = new CollectionAndCollectionConvertor.ArrayToArray();
     private static final Convertor          arrayToCollection             = new CollectionAndCollectionConvertor.ArrayToCollection();
     private static final Convertor          collectionToArray             = new CollectionAndCollectionConvertor.CollectionToArray();
     private static final Convertor          collectionToCollection        = new CollectionAndCollectionConvertor.CollectionToCollection();
+    // toString处理
     private static final Convertor          objectToString                = new StringAndObjectConvetor.ObjectToString();
+    // 枚举处理
+    private static final Convertor          stringToEnum                  = new StringAndEnumConvertor.StringToEnum();
+    private static final Convertor          enumToString                  = new StringAndEnumConvertor.EnumToString();
 
     private static volatile ConvertorHelper singleton                     = null;
 
@@ -101,12 +106,20 @@ public class ConvertorHelper {
 
         // 如果dest是string，获取一下object->string. (系统默认注册了一个Object.class -> String.class的转化)
         if (convertor == null && dest == String.class) {
-            convertor = objectToString;
+            if (src.isEnum()) {// 如果是枚举
+                convertor = enumToString;
+            } else { // 默认进行toString输出
+                convertor = objectToString;
+            }
         }
 
-        // 如果是其中一个是String类型，另一个是Common类型，进行特殊处理
-        if (convertor == null && src == String.class && commonTypes.containsKey(dest)) {
-            convertor = stringToCommon;
+        // 如果是其中一个是String类
+        if (convertor == null && src == String.class) {
+            if (commonTypes.containsKey(dest)) { // 另一个是Common类型
+                convertor = stringToCommon;
+            } else if (dest.isEnum()) { // 另一个是枚举对象
+                convertor = stringToEnum;
+            }
         }
 
         // 如果src/dest都是Common类型，进行特殊处理
