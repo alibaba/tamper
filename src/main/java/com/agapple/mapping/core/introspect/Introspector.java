@@ -70,6 +70,27 @@ public class Introspector {
     }
 
     /**
+     * 根据信息查询Method，已经有cache实现。
+     * 
+     * @param clazz
+     * @param methodName
+     * @param parameterTypes
+     * @return
+     */
+    public Method getJavaMethod(Class<?> clazz, String methodName, Class... parameterTypes) {
+        String clazzName = clazz.getName();
+        String methodKey = buildMethodKey(clazzName, methodName, parameterTypes);
+
+        Method method = methodCache.get(methodKey);
+        if (null == method) {
+            getFastClass(clazz);// 分析一次clazz,这时会跟新fastMethodCache
+            return methodCache.get(methodKey);
+        } else {
+            return method;
+        }
+    }
+
+    /**
      * 根据methodName进行获取处理，<strong>这里不区分具体的参数<strong>，主要用户进行converter之前，需要先获取目标的method参数对象
      * 
      * @param clazz

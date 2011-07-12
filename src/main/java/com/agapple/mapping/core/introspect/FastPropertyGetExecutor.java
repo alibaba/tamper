@@ -1,6 +1,6 @@
 package com.agapple.mapping.core.introspect;
 
-import java.lang.reflect.Method;
+import net.sf.cglib.reflect.FastMethod;
 
 import com.agapple.mapping.core.BeanMappingException;
 
@@ -9,11 +9,11 @@ import com.agapple.mapping.core.BeanMappingException;
  * 
  * @author jianghang 2011-5-25 下午12:37:50
  */
-public class PropertyGetExecutor extends AbstractExecutor implements GetExecutor {
+public class FastPropertyGetExecutor extends AbstractExecutor implements GetExecutor {
 
-    private Method method;
+    private FastMethod method;
 
-    public PropertyGetExecutor(Introspector is, Class<?> clazz, String identifier){
+    public FastPropertyGetExecutor(Introspector is, Class<?> clazz, String identifier){
         super(clazz, identifier);
         method = discover(is, clazz, identifier);
     }
@@ -32,8 +32,8 @@ public class PropertyGetExecutor extends AbstractExecutor implements GetExecutor
         return method != null;
     }
 
-    public static Method discover(Introspector is, Class<?> clazz, String property) {
-        Method method = discoverGet(is, "get", clazz, property);
+    public static FastMethod discover(Introspector is, Class<?> clazz, String property) {
+        FastMethod method = discoverGet(is, "get", clazz, property);
         if (method == null) {
             // 尝试一下"is"方法
             method = discoverGet(is, "is", clazz, property);
@@ -41,23 +41,23 @@ public class PropertyGetExecutor extends AbstractExecutor implements GetExecutor
         return method;
     }
 
-    public static Method discoverGet(Introspector is, String which, Class<?> clazz, String property) {
-        Method method = null;
+    public static FastMethod discoverGet(Introspector is, String which, Class<?> clazz, String property) {
+        FastMethod method = null;
         final int start = which.length(); // "get" or "is" 情况处理
         StringBuilder sb = new StringBuilder(which);
         sb.append(property);
         char c = sb.charAt(start);
         sb.setCharAt(start, Character.toUpperCase(c));// 转化为 getXxx()
-        method = is.getJavaMethod(clazz, sb.toString());
+        method = is.getFastMethod(clazz, sb.toString());
         // lowercase nth char
         if (method == null) {
             sb.setCharAt(start, Character.toLowerCase(c));
-            method = is.getJavaMethod(clazz, sb.toString());
+            method = is.getFastMethod(clazz, sb.toString());
         }
         return method;
     }
 
-    public Method getMethod() {
+    public FastMethod getMethod() {
         return this.method;
     }
 

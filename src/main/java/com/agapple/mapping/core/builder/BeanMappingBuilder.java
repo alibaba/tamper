@@ -1,6 +1,5 @@
 package com.agapple.mapping.core.builder;
 
-import com.agapple.mapping.core.BeanMappingException;
 import com.agapple.mapping.core.builder.impl.BeanMappingBehaviorBuilder;
 import com.agapple.mapping.core.builder.impl.BeanMappingFieldAttributesBuilder;
 import com.agapple.mapping.core.builder.impl.BeanMappingFieldBuilder;
@@ -30,7 +29,6 @@ public class BeanMappingBuilder implements Builder<BeanMappingObject> {
 
     protected void configure() {
         // 需要客户端实现
-        throw new BeanMappingException("should be implements");
     }
 
     public BeanMappingObjectBuilder mapping(Class srcClass, Class targetClass) {

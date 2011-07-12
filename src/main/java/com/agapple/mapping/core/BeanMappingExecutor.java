@@ -14,6 +14,8 @@ import com.agapple.mapping.core.config.BeanMappingField;
 import com.agapple.mapping.core.config.BeanMappingObject;
 import com.agapple.mapping.core.helper.BatchObjectHolder;
 import com.agapple.mapping.core.introspect.BatchExecutor;
+import com.agapple.mapping.core.introspect.FastPropertyGetExecutor;
+import com.agapple.mapping.core.introspect.FastPropertySetExecutor;
 import com.agapple.mapping.core.introspect.GetExecutor;
 import com.agapple.mapping.core.introspect.MapSetExecutor;
 import com.agapple.mapping.core.introspect.PropertyGetExecutor;
@@ -109,7 +111,7 @@ public class BeanMappingExecutor {
             }
 
             SetExecutor set = beanField.getSetExecutor();// 只针对property进行batch优化
-            if (set != null && (set instanceof PropertySetExecutor) == false) {
+            if (set != null && (set instanceof FastPropertySetExecutor || set instanceof PropertySetExecutor) == false) {
                 config.setBatch(false);
                 return null;
             }
@@ -165,7 +167,7 @@ public class BeanMappingExecutor {
             }
 
             GetExecutor get = beanField.getGetExecutor();// 只针对property进行batch优化
-            if (get != null && (get instanceof PropertyGetExecutor) == false) {
+            if (get != null && (get instanceof FastPropertyGetExecutor || get instanceof PropertyGetExecutor) == false) {
                 config.setBatch(false);
                 return null;
             }

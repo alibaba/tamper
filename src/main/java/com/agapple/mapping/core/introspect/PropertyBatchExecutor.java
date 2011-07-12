@@ -46,8 +46,8 @@ public class PropertyBatchExecutor extends AbstractBatchExecutor {
         for (int i = 0; i < fields.length; i++) {
             String property = fields[i];
             Class arg = args[i];
-            FastMethod setMethod = PropertySetExecutor.discover(is, clazz, property, arg);
-            FastMethod getMethod = PropertyGetExecutor.discover(is, clazz, property);
+            FastMethod setMethod = FastPropertySetExecutor.discover(is, clazz, property, arg);
+            FastMethod getMethod = FastPropertyGetExecutor.discover(is, clazz, property);
             if (setMethod == null) {
                 throw new BeanMappingException("class[" + clazz.getName() + "] field[" + property + "] arg["
                                                + arg.getName() + "] set Method is not exist!");
