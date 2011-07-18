@@ -1,6 +1,7 @@
 package com.agapple.mapping.core.introspect;
 
 import java.lang.ref.SoftReference;
+import java.lang.reflect.Method;
 
 import com.agapple.mapping.core.BeanMappingException;
 
@@ -60,7 +61,7 @@ public class Uberspector {
 
         // 尝试一下bean处理
         if (property != null) {
-            FastPropertyGetExecutor pExecutor = new FastPropertyGetExecutor(getIntrospector(), clazz, property);
+            PropertyGetExecutor pExecutor = new PropertyGetExecutor(getIntrospector(), clazz, property);
             if (pExecutor.isAlive()) {
                 return pExecutor;
             }
@@ -94,7 +95,7 @@ public class Uberspector {
 
         // 尝试一下bean处理
         if (property != null) {
-            FastPropertySetExecutor pExecutor = new FastPropertySetExecutor(getIntrospector(), clazz, property, arg);
+            PropertySetExecutor pExecutor = new PropertySetExecutor(getIntrospector(), clazz, property, arg);
             if (pExecutor.isAlive()) {
                 return pExecutor;
             }
@@ -125,8 +126,10 @@ public class Uberspector {
             if (getResultClass != null) {
                 return getResultClass;// 优先设置为getResult的class对象
             }
-        } else if (getExecutor instanceof FastPropertyGetExecutor || getExecutor instanceof PropertyGetExecutor) {
+        } else if (getExecutor instanceof FastPropertyGetExecutor) {
             return ((FastPropertyGetExecutor) getExecutor).getMethod().getReturnType(); // 获取getExecutor方法的返回结果类型
+        } else if (getExecutor instanceof PropertyGetExecutor) {
+            return ((PropertyGetExecutor) getExecutor).getMethod().getReturnType(); // 获取getExecutor方法的返回结果类型
         } else if (getExecutor instanceof FieldGetExecutor) {
             return ((FieldGetExecutor) getExecutor).getField().getType(); // 获取属性的类型
         } else if (getExecutor instanceof ThisSymbolGetExecutor) {
@@ -145,8 +148,10 @@ public class Uberspector {
             if (getResultClass != null) {
                 return getResultClass;// 优先设置为getResult的class对象
             }
-        } else if (setExecutor instanceof FastPropertySetExecutor || setExecutor instanceof PropertySetExecutor) {
-            return getTargetClass((FastPropertySetExecutor) setExecutor);
+        } else if (setExecutor instanceof FastPropertySetExecutor) {
+            return getTargetClass(((FastPropertySetExecutor) setExecutor).getMethod().getJavaMethod());
+        } else if (setExecutor instanceof PropertySetExecutor) {
+            return getTargetClass(((PropertySetExecutor) setExecutor).getMethod());
         } else if (setExecutor instanceof FieldSetExecutor) {
             return ((FieldSetExecutor) setExecutor).getField().getType();
         }
@@ -158,11 +163,10 @@ public class Uberspector {
     /**
      * 根据{@linkplain SetExecutor}获取对应的目标targetClass
      */
-    private Class getTargetClass(FastPropertySetExecutor setExecutor) {
-        Class[] params = setExecutor.getMethod().getParameterTypes();
+    private Class getTargetClass(Method setMethod) {
+        Class[] params = setMethod.getParameterTypes();
         if (params == null || params.length != 1) {
-            throw new BeanMappingException("illegal set method[" + setExecutor.getMethod().getName()
-                                           + "] for ParameterType");
+            throw new BeanMappingException("illegal set method[" + setMethod.getName() + "] for ParameterType");
         }
         return params[0];
     }

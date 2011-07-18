@@ -399,22 +399,22 @@ public class BeanMappingDymaicTest extends TestCase {
         assertEquals(array[0].get("name"), "ljh");
         assertEquals(array[0].get("bigDecimalValue"), BigDecimal.TEN);
     }
-}
 
-class NoMethodBean {
+    public static class NoMethodBean {
 
-    private int       intValue;
-    protected Integer integerValue;
-    public BigDecimal bigDecimalValue;
+        private int       intValue;
+        protected Integer integerValue;
+        public BigDecimal bigDecimalValue;
 
-    public NoMethodBean(){
-        intValue = 10;
-        integerValue = Integer.valueOf(10);
-        bigDecimalValue = BigDecimal.TEN;
+        public NoMethodBean(){
+            intValue = 10;
+            integerValue = Integer.valueOf(10);
+            bigDecimalValue = BigDecimal.TEN;
+        }
+
+        public int getIntValue() {
+            return intValue;
+        }
+
     }
-
-    public int getIntValue() {
-        return intValue;
-    }
-
 }
