@@ -2,7 +2,7 @@ package com.agapple.mapping.core.config;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.Map;
 
 import com.agapple.mapping.core.builder.BeanMappingBuilder;
 
@@ -49,7 +49,7 @@ public class BeanMappingConfigHelper {
      * 根据class查找对应的{@linkplain BeanMappingObject}
      */
     public BeanMappingObject getBeanMappingObject(Class src, Class target) {
-        return repository.getBeanMappingObject(src, target);
+        return getFromRepository(src, target, this.repository);
     }
 
     /**
@@ -59,7 +59,7 @@ public class BeanMappingConfigHelper {
         BeanMappingObject object = autoRepository.getBeanMappingObject(src, target);
         if (object == null && autoRegister) {
             autoRepository.register(src, target);
-            object = autoRepository.getBeanMappingObject(src, target);
+            object = getFromRepository(src, target, this.autoRepository);
         }
         return object;
     }
@@ -70,12 +70,13 @@ public class BeanMappingConfigHelper {
     public BeanMappingObject getBeanMapObject(Class src, Class target, boolean autoRegister) {
         BeanMappingObject object = autoRepository.getBeanMappingObject(src, target);
         if (object == null && autoRegister) {
-            if (src == HashMap.class) {
+            if (isMap(src)) {// 判断是否为map接口的子类
                 autoRepository.registerMap(target);
             } else {
                 autoRepository.registerMap(src);
             }
-            object = autoRepository.getBeanMappingObject(src, target);
+
+            object = getFromRepository(src, target, this.autoRepository);
         }
         return object;
     }
@@ -117,6 +118,33 @@ public class BeanMappingConfigHelper {
 
     public void registerConfig(InputStream in) {
         repository.registerConfig(in);
+    }
+
+    // ======================== helper method ======================
+    /**
+     * @param src
+     * @param target
+     * @return
+     */
+    private BeanMappingObject getFromRepository(Class src, Class target, BeanMappingConfigRespository repository) {
+        BeanMappingObject object = repository.getBeanMappingObject(src, target);
+        if (object == null) { // 再尝试一下map接口的处理
+            boolean isSrcMap = isMap(src);
+            boolean isTargetMap = isMap(target);
+            if (isSrcMap && isTargetMap) {
+                object = repository.getBeanMappingObject(Map.class, Map.class);
+            } else if (isSrcMap) {
+                object = repository.getBeanMappingObject(Map.class, target);
+            } else if (isMap(target)) {
+                object = repository.getBeanMappingObject(src, Map.class);
+            }
+        }
+
+        return object;
+    }
+
+    private boolean isMap(Class clazz) {
+        return clazz != null && Map.class.isAssignableFrom(clazz);
     }
 
     // ========================= setter / getter ===================

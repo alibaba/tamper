@@ -3,8 +3,8 @@ package com.agapple.mapping.core.config.parse;
 import java.beans.PropertyDescriptor;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
@@ -96,7 +96,7 @@ public class BeanMappingParser {
         PropertyDescriptor[] targetPds = ReflectionHelper.getPropertyDescriptors(src);
         BeanMappingObject object = new BeanMappingObject();
         object.setSrcClass(src);
-        object.setTargetClass(HashMap.class);
+        object.setTargetClass(Map.class); // 设置为map接口
         object.setBatch(true);
         List<BeanMappingField> fields = new ArrayList<BeanMappingField>();
         BeanMappingBehavior globalBehavior = BeanMappingConfigHelper.getInstance().getGlobalBehavior();

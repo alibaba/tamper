@@ -19,6 +19,7 @@ public class Introspector {
 
     private Map<String, FastClass>  fastClassCache  = new ConcurrentHashMap<String, FastClass>();
     private Map<String, FastMethod> fastMethodCache = new ConcurrentHashMap<String, FastMethod>();
+    private Map<String, Class>      classCache      = new ConcurrentHashMap<String, Class>();
     private Map<String, Method>     methodCache     = new ConcurrentHashMap<String, Method>();
     private Map<String, Method[]>   allMethodCache  = new ConcurrentHashMap<String, Method[]>();
     private Map<String, Field>      fieldCache      = new ConcurrentHashMap<String, Field>();
@@ -83,7 +84,7 @@ public class Introspector {
 
         Method method = methodCache.get(methodKey);
         if (null == method) {
-            getFastClass(clazz);// 分析一次clazz,这时会跟新fastMethodCache
+            getFastClass(clazz);// 分析一次clazz,这时会跟新methodCache
             return methodCache.get(methodKey);
         } else {
             return method;
@@ -102,7 +103,7 @@ public class Introspector {
         String className = clazz.getName();
         Method[] methods = allMethodCache.get(className);
         if (methods == null) {
-            getFastClass(clazz);// 分析一次clazz,这时会跟新fastMethodCache
+            initJavaClassCache(clazz);// 分析一次clazz,这时会跟新allMethodCache
             methods = allMethodCache.get(className);
         }
         if (methods == null) {
@@ -120,12 +121,11 @@ public class Introspector {
     public Method[] getJavaMethods(Class<?> clazz) {
         Method[] methods = allMethodCache.get(clazz.getName());
         if (methods == null) {
-            getFastClass(clazz);// 分析一次clazz,这时会跟新fastMethodCache
+            initJavaClassCache(clazz);// 分析一次clazz,这时会跟新allMethodCache
             return allMethodCache.get(clazz.getName());
         } else {
             return methods;
         }
-
     }
 
     public Field getField(Class<?> clazz, String fieldName) {
@@ -181,6 +181,26 @@ public class Introspector {
     }
 
     // ============================ helper mthod =========================
+
+    private void initJavaClassCache(Class clazz) {
+        String clazzName = clazz.getName();
+        Class cl = classCache.get(clazzName);
+        if (null == cl) {
+            synchronized (clazz) { // 进行锁控制
+                cl = classCache.get(clazzName); // double check
+                if (cl != null) {
+                    return;
+                }
+                Method[] methods = clazz.getMethods();
+                for (Method m : methods) {
+                    String key = buildMethodKey(clazzName, m.getName(), m.getParameterTypes());
+                    methodCache.put(key, m);
+                }
+                allMethodCache.put(clazzName, methods);
+            }
+        }
+    }
+
     /**
      * @param methodName
      * @param clazzName
