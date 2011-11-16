@@ -40,6 +40,8 @@ public class ConvertorHelper {
     // 枚举处理
     private static final Convertor          stringToEnum                  = new StringAndEnumConvertor.StringToEnum();
     private static final Convertor          enumToString                  = new StringAndEnumConvertor.EnumToString();
+    private static final Convertor          sqlToDate                     = new SqlDateAndDateConvertor.SqlDateToDateConvertor();
+    private static final Convertor          dateToSql                     = new SqlDateAndDateConvertor.DateToSqlDateConvertor();
 
     private static volatile ConvertorHelper singleton                     = null;
 
@@ -175,6 +177,13 @@ public class ConvertorHelper {
         repository.registerConvertor(Date.class, String.class, dateTimeToString);
         repository.registerConvertor(String.class, Calendar.class, stringToCalendarTime);
         repository.registerConvertor(Calendar.class, String.class, calendarTimeToString);
+        // 注册默认的Date <-> SqlDate的处理
+        repository.registerConvertor(java.sql.Date.class, Date.class, sqlToDate);
+        repository.registerConvertor(java.sql.Time.class, Date.class, sqlToDate);
+        repository.registerConvertor(java.sql.Timestamp.class, Date.class, sqlToDate);
+        repository.registerConvertor(Date.class, java.sql.Date.class, dateToSql);
+        repository.registerConvertor(Date.class, java.sql.Time.class, dateToSql);
+        repository.registerConvertor(Date.class, java.sql.Timestamp.class, dateToSql);
         // 注册为别名
         repository.registerConvertor(ALIAS_STRING_TO_DATE_DAY, stringToDateDay);
         repository.registerConvertor(ALIAS_STRING_TO_DATE_TIME, stringToDateTime);

@@ -37,7 +37,15 @@ public class PropertyGetExecutor extends AbstractExecutor implements GetExecutor
         if (method == null) {
             // 尝试一下"is"方法
             method = discoverGet(is, "is", clazz, property);
+            if (method == null) {
+                // 特殊处理 boolean isSuccessed生成的set/get方法为isSucessed(),setSuccessed()，需要过滤属性is前缀
+                if (property.startsWith("is")) {
+                    property = property.substring("is".length());// 截取掉is前缀
+                    method = discoverGet(is, "is", clazz, property);
+                }
+            }
         }
+
         return method;
     }
 

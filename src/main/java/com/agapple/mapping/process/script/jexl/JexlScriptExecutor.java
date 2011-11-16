@@ -37,6 +37,7 @@ public class JexlScriptExecutor implements ScriptExecutor {
         functions = new HashMap<String, Object>();
         engine = new JexlEngine();
         engine.setCache(cacheSize);
+        engine.setSilent(true);
         engine.setFunctions(functions); // 注册functions
     }
 

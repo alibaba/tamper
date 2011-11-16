@@ -35,6 +35,18 @@ public class PropertySetExecutor extends AbstractExecutor implements SetExecutor
     }
 
     public static Method discover(Introspector is, Class<?> clazz, String property, Class arg) {
+        Method method = discoverSet(is, clazz, property, arg);
+        if (method == null) {
+            // 特殊处理 boolean isSuccessed生成的set/get方法为isSucessed(),setSuccessed()，需要过滤属性is前缀
+            if (property.startsWith("is")) {
+                property = property.substring("is".length());// 截取掉is前缀
+                method = discoverSet(is, clazz, property, arg);
+            }
+        }
+        return method;
+    }
+
+    public static Method discoverSet(Introspector is, Class<?> clazz, String property, Class arg) {
         String prefix = "set";
         final int start = prefix.length(); // "get" or "is" 情况处理
 
@@ -61,7 +73,6 @@ public class PropertySetExecutor extends AbstractExecutor implements SetExecutor
 
             return method;
         }
-
     }
 
     public Method getMethod() {

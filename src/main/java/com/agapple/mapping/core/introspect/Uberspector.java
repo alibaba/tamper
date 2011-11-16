@@ -67,6 +67,12 @@ public class Uberspector {
             }
         }
 
+        // 尝试一下特殊符号，比如"this"
+        ThisSymbolGetExecutor sExecutor = new ThisSymbolGetExecutor(getIntrospector(), clazz, property);
+        if (sExecutor.isAlive()) {
+            return sExecutor;
+        }
+
         // 尝试一下map处理
         MapGetExecutor mExecutor = new MapGetExecutor(getIntrospector(), clazz, property);
         if (mExecutor.isAlive()) {
@@ -77,12 +83,6 @@ public class Uberspector {
         FieldGetExecutor fExecutor = new FieldGetExecutor(getIntrospector(), clazz, property);
         if (fExecutor.isAlive()) {
             return fExecutor;
-        }
-
-        // 尝试一下特殊符号，比如"this"
-        ThisSymbolGetExecutor sExecutor = new ThisSymbolGetExecutor(getIntrospector(), clazz, property);
-        if (sExecutor.isAlive()) {
-            return sExecutor;
         }
 
         throw new BeanMappingException("can not found GetExecutor for Class[" + clazz.getName() + "] , identifier["
