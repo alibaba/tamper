@@ -1,0 +1,8 @@
+Release 1.0.1
+	"this" symbol GetExecutor bugfix
+	boolean isSuccessed generated set/get methods for the isSucessed()/setSuccessed(), should filter attribute is the prefix
+	Add date and sqlDate convertor
+	Add String and Enum convertor
+	
+Release 1.0.0
+	Initial mapping code
