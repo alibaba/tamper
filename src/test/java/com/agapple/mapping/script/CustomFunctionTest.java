@@ -23,7 +23,8 @@ public class CustomFunctionTest extends TestCase {
 
     @Test
     public void testCustomFunction() {
-        ScriptHelper.getInstance().registerFunctionClass("customFunction", new CustomFunctionClass());
+        CustomFunctionClass function = new CustomFunctionClass();
+        ScriptHelper.getInstance().registerFunctionClass("customFunction", function);
         BeanMappingBuilder builder = new BeanMappingBuilder() {
 
             protected void configure() {
@@ -49,5 +50,6 @@ public class CustomFunctionTest extends TestCase {
         assertEquals(dest.get(ONE_OTHER), "10");
         assertEquals(dest.get(TWO_OTHER), "10");
         assertEquals(dest.get(THREE_OTHER), "20");
+        assertEquals(function.getInitial(), 2);
     }
 }

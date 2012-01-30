@@ -10,10 +10,8 @@ import com.agapple.mapping.core.config.BeanMappingField;
 import com.agapple.mapping.core.config.BeanMappingObject;
 import com.agapple.mapping.core.process.ValueProcess;
 import com.agapple.mapping.core.process.ValueProcessInvocation;
-import com.agapple.mapping.process.script.ScriptContext;
 import com.agapple.mapping.process.script.ScriptExecutor;
 import com.agapple.mapping.process.script.ScriptHelper;
-import com.agapple.mapping.process.script.jexl.JexlScriptContext;
 
 /**
  * 自定义script脚本的处理器 , get流程处理
@@ -40,10 +38,9 @@ public class ScriptValueProcess implements ValueProcess {
                 param.putAll(newParam);
             }
 
-            ScriptContext scriptContext = new JexlScriptContext(param);
             // 进行值转化处理
             ScriptExecutor scriptExecutor = ScriptHelper.getInstance().getScriptExecutor();
-            value = scriptExecutor.evaluate(scriptContext, currentField.getScript());
+            value = scriptExecutor.evaluate(param, currentField.getScript());
         }
 
         // 继续走到下一步处理

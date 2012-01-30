@@ -3,6 +3,10 @@ package com.agapple.mapping.process.script;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.agapple.mapping.core.helper.ReflectionHelper;
 import com.agapple.mapping.process.script.jexl.JexlScriptExecutor;
@@ -15,7 +19,7 @@ import com.agapple.mapping.process.script.jexl.JexlScriptExecutor;
 public class ScriptHelper {
 
     private static final String          DEFAULT_SCRIPT = JexlScriptExecutor.class.getName();
-    private static final String          property       = "BeanMapping.Script.Driver";
+    private static final String          property       = "BeanMapping.Script.Executor";
     private static volatile ScriptHelper singleton      = null;
     private volatile ScriptExecutor      executor       = null;
 
@@ -59,6 +63,17 @@ public class ScriptHelper {
     }
 
     /**
+     * 批量注册function
+     */
+    public void batchRegisterFunctionClass(Map<String, Object> functions) {
+        if (functions != null && functions.size() > 0) {
+            for (Entry<String, Object> entry : functions.entrySet()) {
+                registerFunctionClass(entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+    /**
      * 创建ScriptExecutor
      * 
      * <pre>
@@ -77,7 +92,7 @@ public class ScriptHelper {
         }
 
         // 2. if that fails, try META-INF/services/
-        if (className == null) {
+        if (StringUtils.isEmpty(className)) {
             try {
                 String service = "META-INF/services/" + property;
                 InputStream in;

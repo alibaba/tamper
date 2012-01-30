@@ -7,6 +7,7 @@ import com.agapple.mapping.core.BeanMappingException;
 import com.agapple.mapping.core.BeanMappingExecutor;
 import com.agapple.mapping.core.BeanMappingParam;
 import com.agapple.mapping.core.config.BeanMappingConfigHelper;
+import com.agapple.mapping.core.config.BeanMappingEnvironment;
 import com.agapple.mapping.core.config.BeanMappingObject;
 
 /**
@@ -60,6 +61,7 @@ public class BeanMap {
         param.setSrcRef(src);
         param.setTargetRef(result);
         param.setConfig(this.describeConfig);
+        param.setProcesses(BeanMappingEnvironment.getBeanMapVps());
         // 执行mapping处理
         BeanMappingExecutor.execute(param);
         return result;
@@ -77,6 +79,7 @@ public class BeanMap {
         param.setSrcRef(properties);
         param.setTargetRef(target);
         param.setConfig(this.populateConfig);
+        param.setProcesses(BeanMappingEnvironment.getBeanMapVps());
         // 执行mapping处理
         BeanMappingExecutor.execute(param);
     }

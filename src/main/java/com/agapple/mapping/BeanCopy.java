@@ -1,14 +1,11 @@
 package com.agapple.mapping;
 
-import java.util.Arrays;
-
 import com.agapple.mapping.core.BeanMappingException;
 import com.agapple.mapping.core.BeanMappingExecutor;
 import com.agapple.mapping.core.BeanMappingParam;
 import com.agapple.mapping.core.config.BeanMappingConfigHelper;
+import com.agapple.mapping.core.config.BeanMappingEnvironment;
 import com.agapple.mapping.core.config.BeanMappingObject;
-import com.agapple.mapping.core.process.ValueProcess;
-import com.agapple.mapping.process.ConvertorValueProcess;
 
 /**
  * Bean copy操作的处理单元
@@ -25,8 +22,7 @@ import com.agapple.mapping.process.ConvertorValueProcess;
  */
 public class BeanCopy {
 
-    private static final ValueProcess convetorValueProcess = new ConvertorValueProcess();
-    private BeanMappingObject         config;                                            // 对应的Bean Mapping配置
+    private BeanMappingObject config; // 对应的Bean Mapping配置
 
     BeanCopy(BeanMappingObject config){
         this.config = config;
@@ -53,7 +49,7 @@ public class BeanCopy {
         param.setSrcRef(src);
         param.setTargetRef(target);
         param.setConfig(this.config);
-        param.setProcesses(Arrays.asList(convetorValueProcess));
+        param.setProcesses(BeanMappingEnvironment.getBeanCopyVps());
 
         // 执行mapping处理
         BeanMappingExecutor.execute(param);

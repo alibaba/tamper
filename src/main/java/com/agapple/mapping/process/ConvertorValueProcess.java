@@ -53,7 +53,7 @@ public class ConvertorValueProcess implements ValueProcess {
                     // 无法识别后，就不做转化
                     convertor = ConvertorHelper.getInstance().getConvertor(srcClass, targetClass);
 
-                    if (convertor == null && srcClass != targetClass && logger.isWarnEnabled()) {
+                    if (convertor == null && !targetClass.isAssignableFrom(srcClass) && logger.isWarnEnabled()) {
                         // 记录下日志
                         StringBuilder builder = new StringBuilder();
                         builder.append("srcName[" + currentField.getSrcField().getName());

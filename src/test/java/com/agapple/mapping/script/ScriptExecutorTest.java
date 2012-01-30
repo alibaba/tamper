@@ -3,11 +3,14 @@ package com.agapple.mapping.script;
 import java.util.HashMap;
 import java.util.Map;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import com.agapple.mapping.process.script.ScriptContext;
+import org.junit.Before;
+
+import com.agapple.mapping.TestUtils;
 import com.agapple.mapping.process.script.ScriptExecutor;
-import com.agapple.mapping.process.script.jexl.JexlScriptContext;
+import com.agapple.mapping.process.script.ScriptHelper;
 import com.agapple.mapping.process.script.jexl.JexlScriptExecutor;
 
 /**
@@ -15,8 +18,33 @@ import com.agapple.mapping.process.script.jexl.JexlScriptExecutor;
  */
 public class ScriptExecutorTest extends TestCase {
 
+    @Before
+    public void setUp() {
+        try {
+            // 清空下repository下的数据
+            TestUtils.setField(ScriptHelper.getInstance(), "executor", null);
+        } catch (Exception e) {
+            Assert.fail();
+        }
+    }
+
     public void testJexlScript() {
         ScriptExecutor executor = new JexlScriptExecutor();
+        doTest(executor);
+    }
+
+    public void test_system() {
+        System.setProperty("BeanMapping.Script.Executor", "com.agapple.mapping.process.script.jexl.JexlScriptExecutor");
+        doTest(ScriptHelper.getInstance().getScriptExecutor());
+        System.setProperty("BeanMapping.Script.Executor", "");
+    }
+
+    public void test_service() {
+        System.setProperty("BeanMapping.Script.Executor", "");
+        doTest(ScriptHelper.getInstance().getScriptExecutor());
+    }
+
+    private void doTest(ScriptExecutor executor) {
         Map param = new HashMap();
         // bean数据
         ModelA a = new ModelA();
@@ -41,8 +69,7 @@ public class ScriptExecutorTest extends TestCase {
         param.putAll(converts);
         String expr = "modelA.data.name = convert.convert(oracle$datasource.table$name)";
 
-        ScriptContext context = new JexlScriptContext(param);
-        Object obj = executor.evaluate(context, expr);
+        Object obj = executor.evaluate(param, expr);
         assertEquals(obj, "convert");
         assertEquals(a.getData().getName(), "convert");
     }

@@ -1,0 +1,12 @@
+.project
+.classpath
+target
+classes
+tmp
+temp
+*.log*
+.settings
+antx.properties
+test-output
+bin
+docs

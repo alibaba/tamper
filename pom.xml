@@ -47,6 +47,16 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>alibaba</id>
+			<url>http://code.alibabatech.com/mvn/releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 	
 	<properties>
@@ -68,11 +78,6 @@
 			<version>2.2</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-jexl</artifactId>
-			<version>2.0.1</version>
-		</dependency>
-		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.4</version>
@@ -92,6 +97,29 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
+		<!-- EL表达式 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-jexl</artifactId>
+			<version>2.0.1</version>
+			<!-- 
+			<scope>provided</scope>
+			 -->
+		</dependency>
+		<!-- 
+		<dependency>
+		     <groupId>com.alibaba</groupId>
+		     <artifactId>SimpleEL</artifactId>
+		     <version>0.1.5</version>
+			 <scope>provided</scope>
+		</dependency>
+		<dependency>
+            <groupId>com.googlecode.aviator</groupId>
+            <artifactId>aviator</artifactId>
+            <version>2.2.1</version>
+			<scope>provided</scope>
+        </dependency>
+        -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
