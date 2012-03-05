@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="GBK"?>
-<bean-mappings xmlns="http://mapping4java.googlecode.com/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://mapping4java.googlecode.com/schema/mapping http://mapping4java.googlecode.com/svn/trunk/src/main/resources/META-INF/mapping.xsd">
+<bean-mappings xmlns="https://github.com/agapple/mapping4java/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/agapple/mapping4java/schema/mapping https://raw.github.com/agapple/mapping4java/master/src/main/resources/META-INF/mapping.xsd">
     
     <global-configurations debug="false" mappingNullValue="true" mappingEmptyStrings="true" trimStrings="true" />
     
@@ -17,7 +17,7 @@
     </function-class-configurations>
     
     <bean-mapping srcClass="map" targetClass="java.util.HashMap" reversable="false" mappingNullValue="false" debug="true">
-    	<field-mapping srcName="id" srcClass="java.lang.String" targetName="id" targetClass="java.lang.String" defaultValue="0" convetor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
+    	<field-mapping srcName="id" srcClass="java.lang.String" targetName="id" targetClass="java.lang.String" defaultValue="0" convertor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
     	<field-mapping srcName="name" srcLocatorClass="java.lang.String" targetName="id" targetClass="java.lang.String" targetLocatorClass="java.lang.String" defaultValue="0" convetor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
     	<field-mapping mapping="true" srcName="model" targetName="model" mappingNullValue="true" trimStrings="true" />
     </bean-mapping>

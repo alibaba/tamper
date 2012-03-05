@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="GBK"?>
-<xs:schema targetNamespace="http://mapping4java.googlecode.com/schema/mapping" xmlns="http://mapping4java.googlecode.com/schema/mapping" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema targetNamespace="https://github.com/agapple/mapping4java/schema/mapping" xmlns="https://github.com/agapple/mapping4java/schema/mapping" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
 	<xs:element name="bean-mappings">
         <xs:annotation>
@@ -11,7 +11,7 @@
             </xs:annotation>
             <xs:choice maxOccurs="unbounded">
             	<xs:element ref="global-configurations" maxOccurs="1" />
-            	<xs:element ref="convetors-configurations" maxOccurs="1" />
+            	<xs:element ref="convertors-configurations" maxOccurs="1" />
             	<xs:element ref="class-alias-configurations" maxOccurs="1" />
             	<xs:element ref="function-class-configurations" maxOccurs="1" />
             	<xs:element ref="bean-mapping" maxOccurs="unbounded" />
@@ -48,7 +48,7 @@
 		</xs:complexType>
 	</xs:element>
 		
-	<xs:element name="convetors-configurations">
+	<xs:element name="convertors-configurations">
         <xs:annotation>
         	<xs:documentation>convertor configs</xs:documentation>
         </xs:annotation>
@@ -199,9 +199,9 @@
         			<xs:documentation>if target value is null , defaultValue is used</xs:documentation>
         		</xs:annotation>
         	</xs:attribute>
-        	<xs:attribute name="convetor" type="xs:string" use="optional" >
+        	<xs:attribute name="convertor" type="xs:string" use="optional" >
         		<xs:annotation>
-        			<xs:documentation>custom convetor alias</xs:documentation>
+        			<xs:documentation>custom convertor alias</xs:documentation>
         		</xs:annotation>
         	</xs:attribute>
         	<xs:attribute name="script" type="xs:string" use="optional" >
