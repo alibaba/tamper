@@ -198,9 +198,9 @@ public class BeanMappingParser {
             ClassAliasParse.parseAndRegister(classAliasNodeList.item(i));
         }
 
-        NodeList convetorNodeList = root.getElementsByTagName("convetors-configurations");
-        for (int i = 0; i < convetorNodeList.getLength(); i++) {
-            ConvertorParse.parseAndRegister(convetorNodeList.item(i));
+        NodeList convertorNodeList = root.getElementsByTagName("convertors-configurations");
+        for (int i = 0; i < convertorNodeList.getLength(); i++) {
+            ConvertorParse.parseAndRegister(convertorNodeList.item(i));
         }
 
         NodeList functionClassNodeList = root.getElementsByTagName("function-class-configurations");

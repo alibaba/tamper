@@ -21,8 +21,8 @@ public class StringAndEnumConvertor {
             }
 
             throw new BeanMappingException("Unsupported convert: [" + src.getClass() + "," + destClass.getName() + "]");
-        }
 
+        }
     }
 
     /**

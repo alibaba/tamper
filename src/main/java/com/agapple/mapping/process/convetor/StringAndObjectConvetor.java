@@ -16,7 +16,6 @@ public class StringAndObjectConvetor {
         public Object convert(Object src, Class destClass) {
             return src != null ? src.toString() : null;
         }
-
     }
 
 }

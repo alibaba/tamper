@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="GBK"?>
-<bean-mappings xmlns="http://mapping4java.googlecode.com/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://mapping4java.googlecode.com/schema/mapping http://mapping4java.googlecode.com/svn/trunk/src/main/resources/META-INF/mapping.xsd">
+<bean-mappings xmlns="https://github.com/agapple/mapping4java/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/agapple/mapping4java/schema/mapping https://raw.github.com/agapple/mapping4java/master/src/main/resources/META-INF/mapping.xsd">
     
     <global-configurations debug="true"/>
     

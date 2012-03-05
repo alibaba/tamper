@@ -91,7 +91,7 @@ public class BeanMappingParse {
         Node targetLocatorNode = node.getAttributes().getNamedItem("targetLocatorClass");
         Node targetComponentNode = node.getAttributes().getNamedItem("targetComponentClass");
         Node defaultValueNode = node.getAttributes().getNamedItem("defaultValue");
-        Node convetorNode = node.getAttributes().getNamedItem("convetor");
+        Node convertorNode = node.getAttributes().getNamedItem("convertor");
         Node scriptNode = node.getAttributes().getNamedItem("script");
         if (scriptNode == null && srcNameNode == null) {
             throw new BeanMappingException("srcName or script is requied");
@@ -134,8 +134,8 @@ public class BeanMappingParse {
         if (defaultValueNode != null) {
             beanField.setDefaultValue(defaultValueNode.getNodeValue());
         }
-        if (convetorNode != null) {
-            beanField.setConvertor(convetorNode.getNodeValue());
+        if (convertorNode != null) {
+            beanField.setConvertor(convertorNode.getNodeValue());
         }
         if (scriptNode != null) {
             beanField.setScript(scriptNode.getNodeValue());

@@ -20,8 +20,8 @@ public class ConvertorParse {
 
     private final static Logger logger = LoggerFactory.getLogger(ConvertorParse.class);
 
-    public static void parseAndRegister(Node convetorsNode) {
-        NodeList nodeList = convetorsNode.getChildNodes();
+    public static void parseAndRegister(Node convertorsNode) {
+        NodeList nodeList = convertorsNode.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if ("convertor".equals(node.getNodeName())) {

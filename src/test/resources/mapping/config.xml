@@ -4,9 +4,9 @@
     
     <global-configurations debug="false" mappingNullValue="true" mappingEmptyStrings="true" trimStrings="true" />
     
-    <convetors-configurations>
+    <convertors-configurations>
     	<convertor alias="common" class="commonClass" />
-    </convetors-configurations>
+    </convertors-configurations>
     
     <class-alias-configurations>
     	<classAlias alias="commonClass" class="com.agapple.mapping.process.convetor.CommonAndCommonConvertor$CommonToCommon" />
@@ -18,7 +18,7 @@
     
     <bean-mapping srcClass="map" targetClass="java.util.HashMap" reversable="false" mappingNullValue="false" debug="true">
     	<field-mapping srcName="id" srcClass="java.lang.String" targetName="id" targetClass="java.lang.String" defaultValue="0" convertor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
-    	<field-mapping srcName="name" srcLocatorClass="java.lang.String" targetName="id" targetClass="java.lang.String" targetLocatorClass="java.lang.String" defaultValue="0" convetor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
+    	<field-mapping srcName="name" srcLocatorClass="java.lang.String" targetName="id" targetClass="java.lang.String" targetLocatorClass="java.lang.String" defaultValue="0" convertor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
     	<field-mapping mapping="true" srcName="model" targetName="model" mappingNullValue="true" trimStrings="true" />
     </bean-mapping>
 </bean-mappings>
