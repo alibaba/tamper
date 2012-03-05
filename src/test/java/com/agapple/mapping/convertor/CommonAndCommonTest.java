@@ -9,8 +9,8 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import com.agapple.mapping.core.BeanMappingException;
-import com.agapple.mapping.process.convetor.Convertor;
-import com.agapple.mapping.process.convetor.ConvertorHelper;
+import com.agapple.mapping.process.convertor.Convertor;
+import com.agapple.mapping.process.convertor.ConvertorHelper;
 
 /**
  * @author jianghang 2011-6-21 下午09:46:42

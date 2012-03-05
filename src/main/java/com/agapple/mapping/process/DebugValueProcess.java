@@ -38,7 +38,7 @@ public class DebugValueProcess implements ValueProcess {
                 builder.append("],[defaultValue=" + currentField.getDefaultValue());
             }
             if (StringUtils.isNotEmpty(currentField.getConvertor())) {
-                builder.append("],[convetor=" + currentField.getConvertor());
+                builder.append("],[convertor=" + currentField.getConvertor());
             }
             if (StringUtils.isNotEmpty(currentField.getScript())) {
                 builder.append("],[script=" + currentField.getScript());

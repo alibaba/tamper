@@ -7,7 +7,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.agapple.mapping.core.introspect.GetExecutor;
 import com.agapple.mapping.core.introspect.SetExecutor;
-import com.agapple.mapping.process.convetor.Convertor;
+import com.agapple.mapping.process.convertor.Convertor;
 
 /**
  * 解析完成后的一个BeanMapping的field配置对象

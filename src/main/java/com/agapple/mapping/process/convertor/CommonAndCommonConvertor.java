@@ -1,4 +1,4 @@
-package com.agapple.mapping.process.convetor;
+package com.agapple.mapping.process.convertor;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -147,8 +147,8 @@ public class CommonAndCommonConvertor {
             }
 
             // 其他类型的处理，先转化为String，再转到对应的目标对象
-            StringAndCommonConvertor.StringToCommon strConvetor = new StringAndCommonConvertor.StringToCommon();
-            return strConvetor.convert(value.toPlainString(), targetClass);
+            StringAndCommonConvertor.StringToCommon strConvertor = new StringAndCommonConvertor.StringToCommon();
+            return strConvertor.convert(value.toPlainString(), targetClass);
         }
 
         // BigInteger数据处理
@@ -162,8 +162,8 @@ public class CommonAndCommonConvertor {
             }
 
             // 其他类型的处理，先转化为String，再转到对应的目标对象
-            StringAndCommonConvertor.StringToCommon strConvetor = new StringAndCommonConvertor.StringToCommon();
-            return strConvetor.convert(value.toString(), targetClass);
+            StringAndCommonConvertor.StringToCommon strConvertor = new StringAndCommonConvertor.StringToCommon();
+            return strConvertor.convert(value.toString(), targetClass);
         }
 
         @Override

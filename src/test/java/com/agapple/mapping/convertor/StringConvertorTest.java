@@ -9,8 +9,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.agapple.mapping.process.convetor.Convertor;
-import com.agapple.mapping.process.convetor.ConvertorHelper;
+import com.agapple.mapping.process.convertor.Convertor;
+import com.agapple.mapping.process.convertor.ConvertorHelper;
 
 /**
  * convertor相关的单元测试

@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.agapple.mapping.process.convetor.Convertor;
-import com.agapple.mapping.process.convetor.ConvertorHelper;
+import com.agapple.mapping.process.convertor.Convertor;
+import com.agapple.mapping.process.convertor.ConvertorHelper;
 
 /**
  * @author jianghang 2011-7-12 下午01:04:33

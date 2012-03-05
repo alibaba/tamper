@@ -11,7 +11,7 @@ import com.agapple.mapping.core.config.BeanMappingBehavior;
 import com.agapple.mapping.core.config.BeanMappingConfigHelper;
 import com.agapple.mapping.core.config.BeanMappingField;
 import com.agapple.mapping.core.config.BeanMappingObject;
-import com.agapple.mapping.process.convetor.StringAndCommonConvertor.StringToCommon;
+import com.agapple.mapping.process.convertor.StringAndCommonConvertor.StringToCommon;
 
 /**
  * @author jianghang 2011-6-22 上午10:57:00

@@ -12,11 +12,11 @@ import com.agapple.mapping.core.config.BeanMappingField;
 import com.agapple.mapping.core.helper.ReflectionHelper;
 import com.agapple.mapping.core.process.ValueProcess;
 import com.agapple.mapping.core.process.ValueProcessInvocation;
-import com.agapple.mapping.process.convetor.Convertor;
-import com.agapple.mapping.process.convetor.ConvertorHelper;
+import com.agapple.mapping.process.convertor.Convertor;
+import com.agapple.mapping.process.convertor.ConvertorHelper;
 
 /**
- * {@linkplain Convetor}转化的处理器,set流程处理
+ * {@linkplain Convertor}转化的处理器,set流程处理
  * 
  * @author jianghang 2011-5-27 下午09:30:40
  */
@@ -42,7 +42,7 @@ public class ConvertorValueProcess implements ValueProcess {
                 convertor = ConvertorHelper.getInstance().getConvertor(customConvertorName);
             } else if (convertor == null) {
                 // srcClass针对直接使用script的情况，会出现为空，这时候需要依赖value.getClass进行转化
-                // 优先不选择使用value.getClass()的原因：原生类型会返回对应的Object类型，导出会出现不必要的convetor转化
+                // 优先不选择使用value.getClass()的原因：原生类型会返回对应的Object类型，导出会出现不必要的convertor转化
                 Class srcClass = currentField.getSrcField().getClazz();
                 if (srcClass == null || srcClass.isPrimitive() == false) {
                     srcClass = value.getClass();

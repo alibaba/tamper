@@ -1,4 +1,4 @@
-package com.agapple.mapping.process.convetor;
+package com.agapple.mapping.process.convertor;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -36,7 +36,7 @@ public class ConvertorHelper {
     private static final Convertor          collectionToArray             = new CollectionAndCollectionConvertor.CollectionToArray();
     private static final Convertor          collectionToCollection        = new CollectionAndCollectionConvertor.CollectionToCollection();
     // toString处理
-    private static final Convertor          objectToString                = new StringAndObjectConvetor.ObjectToString();
+    private static final Convertor          objectToString                = new StringAndObjectConvertor.ObjectToString();
     // 枚举处理
     private static final Convertor          stringToEnum                  = new StringAndEnumConvertor.StringToEnum();
     private static final Convertor          enumToString                  = new StringAndEnumConvertor.EnumToString();

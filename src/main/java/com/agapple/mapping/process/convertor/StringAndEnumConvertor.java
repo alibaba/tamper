@@ -1,4 +1,4 @@
-package com.agapple.mapping.process.convetor;
+package com.agapple.mapping.process.convertor;
 
 import com.agapple.mapping.core.BeanMappingException;
 

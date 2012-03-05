@@ -8,8 +8,8 @@ import org.w3c.dom.NodeList;
 
 import com.agapple.mapping.core.BeanMappingException;
 import com.agapple.mapping.core.helper.ReflectionHelper;
-import com.agapple.mapping.process.convetor.Convertor;
-import com.agapple.mapping.process.convetor.ConvertorHelper;
+import com.agapple.mapping.process.convertor.Convertor;
+import com.agapple.mapping.process.convertor.ConvertorHelper;
 
 /**
  * 解析下Convertor的相关配置,直接注册到仓库

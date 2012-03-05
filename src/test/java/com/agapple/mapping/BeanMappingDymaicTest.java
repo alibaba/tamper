@@ -25,7 +25,7 @@ import com.agapple.mapping.object.NestedSrcMappingObject;
 import com.agapple.mapping.object.NestedTargetMappingObject;
 import com.agapple.mapping.object.SrcMappingObject;
 import com.agapple.mapping.object.TargetMappingObject;
-import com.agapple.mapping.process.convetor.StringAndDateConvertor.StringToDateDay;
+import com.agapple.mapping.process.convertor.StringAndDateConvertor.StringToDateDay;
 
 /**
  * 基于API构造mapping进行测试，更全面的测试

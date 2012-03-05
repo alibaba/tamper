@@ -9,7 +9,7 @@
     </convertors-configurations>
     
     <class-alias-configurations>
-    	<classAlias alias="commonClass" class="com.agapple.mapping.process.convetor.CommonAndCommonConvertor$CommonToCommon" />
+    	<classAlias alias="commonClass" class="com.agapple.mapping.process.convertor.CommonAndCommonConvertor$CommonToCommon" />
     </class-alias-configurations>
     
     <function-class-configurations>
