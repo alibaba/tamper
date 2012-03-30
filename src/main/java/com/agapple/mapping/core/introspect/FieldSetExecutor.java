@@ -36,7 +36,7 @@ public class FieldSetExecutor extends AbstractExecutor implements SetExecutor {
     public static Field discover(Introspector is, Class<?> clazz, String property, Class arg) {
         Field field = is.getField(clazz, property);// 直接通过class获取属性
         if (field != null) {
-            if (field.getType() != arg) { // 判断类型是否匹配
+            if (arg != null && field.getType() != arg) { // 判断类型是否匹配
                 return null;
             }
 
