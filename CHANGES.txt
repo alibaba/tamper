@@ -1,3 +1,10 @@
+Release 1.0.2
+	convetor包名重构，拼写错误
+	ScriptExecutor接口重构，加上ScriptContext操作
+	FiledSetExecutor去除对args的强制匹配依赖
+	mapping支持name定义
+	mapping支持嵌套映射/集合映射对象的name定义
+
 Release 1.0.1
 	"this" symbol GetExecutor bugfix
 	boolean isSuccessed generated set/get methods for the isSucessed()/setSuccessed(), should filter attribute is the prefix

@@ -12,11 +12,17 @@ import com.agapple.mapping.core.introspect.BatchExecutor;
 /**
  * 解析完成后的一个BeanMapping配置对象
  * 
+ * <pre>
+ * ChangeLog :
+ * a. 1.0.2支持mapping定义alias name，用于解决map<->map对象的多种映射定义
+ * </pre>
+ * 
  * @author jianghang 2011-5-26 下午07:16:10
  */
 public class BeanMappingObject implements Serializable {
 
     private static final long      serialVersionUID = 9099474060890980056L;
+    private String                 name;                                                // 定义mapping配置name，默认为srcClass:targetClass
     private String                 srcKey           = "src";                            // format上下文中src key，默认:src
     private Class                  srcClass         = null;                             // mapping的原始class
     private String                 targetKey        = "target";                         // format上下文中targetkey,默认:target
@@ -29,6 +35,14 @@ public class BeanMappingObject implements Serializable {
     // ======================= 内部数据，外部请勿直接操作 ==================
     private BatchExecutor          getBatchExecutor = null;                             // get操作的batch执行引擎
     private BatchExecutor          setBatchExecutor = null;                             // set操作的batch执行引擎
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Class getSrcClass() {
         return srcClass;

@@ -21,19 +21,20 @@ import com.agapple.mapping.core.process.ValueProcess;
  */
 public class BeanMappingEnvironment {
 
-    private static final String       config              = "mapping.properties";
-    private static final String       BEANMAP_VPS         = "beanMap.valueProcess.list";
-    private static final String       BEANMAPPING_VPS     = "beanMapping.valueProcess.list";
-    private static final String       BEANCOPY_VPS        = "beanCopy.valueProcess.list";
+    private static final String       config                     = "mapping.properties";
+    private static final String       BEANMAP_VPS                = "beanMap.valueProcess.list";
+    private static final String       BEANMAPPING_VPS            = "beanMapping.valueProcess.list";
+    private static final String       BEANCOPY_VPS               = "beanCopy.valueProcess.list";
 
-    private static final String       VALUEPROCESS_PREFIX = "valueProcess.";
-    private static final String       UBERSPECTOR_IMPL    = "uberspect.impl";
+    private static final String       VALUEPROCESS_PREFIX        = "valueProcess.";
+    private static final String       UBERSPECTOR_IMPL           = "uberspect.impl";
 
-    private static Properties         properties          = new Properties(System.getProperties());
+    private static Properties         properties                 = new Properties(System.getProperties());
     private static List<ValueProcess> beanMappingVps;
     private static List<ValueProcess> beanMapVps;
     private static List<ValueProcess> beanCopyVps;
     private static Class              uberspectClazz;
+    private static boolean            isBeanMappingSupportScript = false;
 
     static {
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(config);
@@ -44,7 +45,10 @@ public class BeanMappingEnvironment {
         }
         try {
             // 解析value process
-            beanMappingVps = parseVps(properties.getProperty(BEANMAPPING_VPS, StringUtils.EMPTY));
+            String vps = properties.getProperty(BEANMAPPING_VPS, StringUtils.EMPTY);
+            beanMappingVps = parseVps(vps);
+            isBeanMappingSupportScript = StringUtils.containsIgnoreCase(vps, "script");
+
             beanMapVps = parseVps(properties.getProperty(BEANMAP_VPS, StringUtils.EMPTY));
             beanCopyVps = parseVps(properties.getProperty(BEANCOPY_VPS, StringUtils.EMPTY));
             // 解析uberspect
@@ -53,6 +57,10 @@ public class BeanMappingEnvironment {
         } catch (Exception e) {
             throw new BeanMappingException(e);
         }
+    }
+
+    public static boolean isBeanMappingSupportScript() {
+        return isBeanMappingSupportScript;
     }
 
     public static List<ValueProcess> getBeanMappingVps() {
@@ -73,6 +81,7 @@ public class BeanMappingEnvironment {
 
     public static void setBeanMappingVps(String vps) {
         beanMappingVps = parseVps(vps);
+        isBeanMappingSupportScript = StringUtils.containsIgnoreCase(vps, "script");
     }
 
     public static void setBeanMapVps(String vps) {

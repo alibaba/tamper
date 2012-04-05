@@ -311,9 +311,21 @@ public class BeanMappingExecutor {
         if (beanField.getSrcField().getClazz() == null || beanField.getTargetField().getClazz() == null) {
             throw new BeanMappingException("srcClass or targetClass is null , " + beanField.toString());
         }
-        BeanMappingObject object = BeanMappingConfigHelper.getInstance().getBeanMappingObject(
-                                                                                              beanField.getSrcField().getClazz(),
-                                                                                              beanField.getTargetField().getClazz());
+        // change for v1.0.2
+        BeanMappingObject object = beanField.getNestObject();
+        if (object == null) {
+            if (StringUtils.isNotEmpty(beanField.getNestName())) {
+
+                object = BeanMappingConfigHelper.getInstance().getBeanMappingObject(beanField.getNestName());
+            } else {
+                object = BeanMappingConfigHelper.getInstance().getBeanMappingObject(
+                                                                                    beanField.getSrcField().getClazz(),
+                                                                                    beanField.getTargetField().getClazz());
+            }
+
+            beanField.setNestObject(object);// cache一下结果
+        }
+
         if (object == null) {
             throw new BeanMappingException("no bean mapping config for " + beanField.toString());
         }

@@ -22,6 +22,8 @@ public class BeanMappingParse {
     public static BeanMappingObject parse(Node node, BeanMappingBehavior parent) {
         BeanMappingObject config = new BeanMappingObject();
         // mapping source class
+        Node nameNode = node.getAttributes().getNamedItem("name");
+        // mapping source class
         Node srcNode = node.getAttributes().getNamedItem("srcClass");
         // mapping target class
         Node targetNode = node.getAttributes().getNamedItem("targetClass");
@@ -39,6 +41,9 @@ public class BeanMappingParse {
         String target = targetNode.getNodeValue();
         config.setSrcClass(ReflectionHelper.forName(src));
         config.setTargetClass(ReflectionHelper.forName(target));
+        if (nameNode != null) {
+            config.setName(nameNode.getNodeValue()); // v1.0.2增加了mapping name定义
+        }
         if (srcKeyNode != null) {
             config.setSrcKey(srcKeyNode.getNodeValue());
         }
@@ -93,6 +98,7 @@ public class BeanMappingParse {
         Node defaultValueNode = node.getAttributes().getNamedItem("defaultValue");
         Node convertorNode = node.getAttributes().getNamedItem("convertor");
         Node scriptNode = node.getAttributes().getNamedItem("script");
+
         if (scriptNode == null && srcNameNode == null) {
             throw new BeanMappingException("srcName or script is requied");
         }
@@ -144,6 +150,12 @@ public class BeanMappingParse {
         Node mappingNode = node.getAttributes().getNamedItem("mapping");
         if (mappingNode != null) {
             beanField.setMapping(Boolean.valueOf(mappingNode.getNodeValue()));
+        }
+
+        // 处理下nest name
+        Node nestNode = node.getAttributes().getNamedItem("nest");
+        if (nestNode != null) {
+            beanField.setNestName(nestNode.getNodeValue());
         }
 
         return beanField;

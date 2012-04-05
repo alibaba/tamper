@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.agapple.mapping.core.builder.BeanMappingBuilder;
 import com.agapple.mapping.core.config.parse.BeanMappingParser;
 
@@ -15,6 +19,7 @@ import com.agapple.mapping.core.config.parse.BeanMappingParser;
  */
 public class BeanMappingConfigRespository {
 
+    private final static Logger            logger    = LoggerFactory.getLogger(BeanMappingConfigRespository.class);
     private static final String            SEPERATOR = ":";
     private Map<String, BeanMappingObject> mappings  = new ConcurrentHashMap<String, BeanMappingObject>(10);
 
@@ -26,12 +31,19 @@ public class BeanMappingConfigRespository {
     }
 
     /**
+     * 根据name查找对应的{@linkplain BeanMappingObject}
+     */
+    public BeanMappingObject getBeanMappingObject(String name) {
+        return mappings.get(name);
+    }
+
+    /**
      * 直接注册一个解析好的{@linkplain BeanMappingBuilder}
      */
     public void register(BeanMappingBuilder builder) {
         if (builder != null) {
             BeanMappingObject object = builder.get();
-            mappings.put(mapperObjectName(object.getSrcClass(), object.getTargetClass()), object);
+            register(object);
         }
     }
 
@@ -39,8 +51,20 @@ public class BeanMappingConfigRespository {
      * 直接注册一个解析号的{@linkplain BeanMappingObject}
      */
     public void register(BeanMappingObject object) {
+        BeanMappingObject old = null;
+        String name = null;
         if (object != null) {
-            mappings.put(mapperObjectName(object.getSrcClass(), object.getTargetClass()), object);
+            if (StringUtils.isEmpty(object.getName())) {
+                name = mapperObjectName(object.getSrcClass(), object.getTargetClass());
+            } else {
+                name = object.getName();
+            }
+
+            old = mappings.put(name, object);
+        }
+
+        if (old != null) {
+            logger.warn("{} has been replaced by : {}", name, object.toString());
         }
     }
 
@@ -53,7 +77,7 @@ public class BeanMappingConfigRespository {
     public void register(Class src, Class target) {
         List<BeanMappingObject> objects = BeanMappingParser.parseMapping(src, target);
         for (BeanMappingObject object : objects) {
-            mappings.put(mapperObjectName(object.getSrcClass(), object.getTargetClass()), object);
+            register(object);
         }
     }
 
@@ -63,7 +87,7 @@ public class BeanMappingConfigRespository {
     public void registerMap(Class src) {
         List<BeanMappingObject> objects = BeanMappingParser.parseMapMapping(src);
         for (BeanMappingObject object : objects) {
-            mappings.put(mapperObjectName(object.getSrcClass(), object.getTargetClass()), object);
+            register(object);
         }
     }
 
@@ -73,7 +97,7 @@ public class BeanMappingConfigRespository {
     public void registerConfig(InputStream in) {
         List<BeanMappingObject> objects = BeanMappingParser.parseMapping(in);
         for (BeanMappingObject object : objects) {
-            mappings.put(mapperObjectName(object.getSrcClass(), object.getTargetClass()), object);
+            register(object);
         }
     }
 

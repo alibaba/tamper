@@ -53,6 +53,13 @@ public class BeanMappingConfigHelper {
     }
 
     /**
+     * 根据name查找对应的{@linkplain BeanMappingObject}
+     */
+    public BeanMappingObject getBeanMappingObject(String name) {
+        return repository.getBeanMappingObject(name);
+    }
+
+    /**
      * 根据class查找对应的{@linkplain BeanMappingObject}，如果不存在则进行自动注册
      */
     public BeanMappingObject getBeanMappingObject(Class src, Class target, boolean autoRegister) {
@@ -121,6 +128,7 @@ public class BeanMappingConfigHelper {
     }
 
     // ======================== helper method ======================
+
     /**
      * @param src
      * @param target

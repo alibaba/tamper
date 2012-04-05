@@ -5,6 +5,8 @@ import java.util.HashMap;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.junit.Test;
 
 import com.agapple.mapping.core.config.BeanMappingBehavior;
@@ -25,6 +27,8 @@ public class ConfigTest extends TestCase {
         BeanMappingConfigHelper.getInstance().registerConfig(file);
         BeanMappingObject object = BeanMappingConfigHelper.getInstance().getBeanMappingObject(HashMap.class,
                                                                                               HashMap.class);
+        assertNull(object);
+        object = BeanMappingConfigHelper.getInstance().getBeanMappingObject("testConfig");
         printObject(object);
         assertNotNull(object);
         BeanMappingBehavior globalBehavior = BeanMappingConfigHelper.getInstance().getGlobalBehavior();
@@ -59,10 +63,10 @@ public class ConfigTest extends TestCase {
     }
 
     private void printObject(BeanMappingObject object) {
-        // System.out.println(ToStringBuilder.reflectionToString(object, ToStringStyle.MULTI_LINE_STYLE));
-        // for (BeanMappingField field : object.getBeanFields()) {
-        // System.out.println(ToStringBuilder.reflectionToString(field, ToStringStyle.MULTI_LINE_STYLE));
-        // }
+        System.out.println(ToStringBuilder.reflectionToString(object, ToStringStyle.MULTI_LINE_STYLE));
+        for (BeanMappingField field : object.getBeanFields()) {
+            System.out.println(ToStringBuilder.reflectionToString(field, ToStringStyle.MULTI_LINE_STYLE));
+        }
     }
 
 }

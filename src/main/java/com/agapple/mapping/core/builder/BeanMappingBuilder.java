@@ -31,6 +31,12 @@ public class BeanMappingBuilder implements Builder<BeanMappingObject> {
         // 需要客户端实现
     }
 
+    public BeanMappingObjectBuilder mapping(String name, Class srcClass, Class targetClass) {
+        BeanMappingObjectBuilder builder = new BeanMappingObjectBuilder(name, srcClass, targetClass, global);
+        object = builder.get();
+        return builder;
+    }
+
     public BeanMappingObjectBuilder mapping(Class srcClass, Class targetClass) {
         BeanMappingObjectBuilder builder = new BeanMappingObjectBuilder(srcClass, targetClass, global);
         object = builder.get();

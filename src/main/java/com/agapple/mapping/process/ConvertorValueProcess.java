@@ -12,6 +12,7 @@ import com.agapple.mapping.core.config.BeanMappingField;
 import com.agapple.mapping.core.helper.ReflectionHelper;
 import com.agapple.mapping.core.process.ValueProcess;
 import com.agapple.mapping.core.process.ValueProcessInvocation;
+import com.agapple.mapping.process.convertor.CollectionConvertor;
 import com.agapple.mapping.process.convertor.Convertor;
 import com.agapple.mapping.process.convertor.ConvertorHelper;
 
@@ -71,9 +72,13 @@ public class ConvertorValueProcess implements ValueProcess {
                 if (componentClasses != null && componentClasses.size() > 0) {
                     array = componentClasses.toArray(new Class[componentClasses.size()]);
                 }
-                if (array != null) {
+                if (array != null && convertor instanceof CollectionConvertor) {
                     // 进行嵌套对象处理
-                    value = convertor.convertCollection(value, currentField.getTargetField().getClazz(), array);
+                    value = ((CollectionConvertor) convertor).convertCollection(
+                                                                                currentField,
+                                                                                value,
+                                                                                currentField.getTargetField().getClazz(),
+                                                                                array);
                 } else {
                     value = convertor.convert(value, currentField.getTargetField().getClazz());
                 }

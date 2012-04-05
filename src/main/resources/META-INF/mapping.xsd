@@ -118,6 +118,11 @@
         	<xs:sequence>
         		<xs:element ref="field-mapping" maxOccurs="unbounded" />
         	</xs:sequence>
+        	<xs:attribute name="name" type="xs:string">
+        		<xs:annotation>
+        			<xs:documentation>mapping config name,default value:srcClass name + targetClass name</xs:documentation>
+        		</xs:annotation>
+        	</xs:attribute>
         	<xs:attribute name="srcClass" type="xs:string" use="required" />
         	<xs:attribute name="srcKey" type="xs:string" default="src">
         		<xs:annotation>
@@ -212,6 +217,11 @@
         	<xs:attribute name="mapping" type="xs:boolean" use="optional" default="false">
         		<xs:annotation>
         			<xs:documentation>nested mapping</xs:documentation>
+        		</xs:annotation>
+        	</xs:attribute>
+        	<xs:attribute name="nest" type="xs:string" use="optional">
+        		<xs:annotation>
+        			<xs:documentation>nested mapping name</xs:documentation>
         		</xs:annotation>
         	</xs:attribute>
 			<xs:attribute name="mappingNullValue" type="xs:boolean">

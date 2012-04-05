@@ -16,9 +16,14 @@
     	<functionClass name="customFunction" class="com.agapple.mapping.script.CustomFunctionClass" />
     </function-class-configurations>
     
-    <bean-mapping srcClass="map" targetClass="java.util.HashMap" reversable="false" mappingNullValue="false" debug="true">
+    <bean-mapping name="nestConfig" srcClass="map" targetClass="java.util.HashMap" reversable="false" mappingNullValue="false" debug="true">
     	<field-mapping srcName="id" srcClass="java.lang.String" targetName="id" targetClass="java.lang.String" defaultValue="0" convertor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
     	<field-mapping srcName="name" srcLocatorClass="java.lang.String" targetName="id" targetClass="java.lang.String" targetLocatorClass="java.lang.String" defaultValue="0" convertor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
-    	<field-mapping mapping="true" srcName="model" targetName="model" mappingNullValue="true" trimStrings="true" />
+    </bean-mapping>
+    
+    <bean-mapping name="testConfig" srcClass="map" targetClass="java.util.HashMap" reversable="false" mappingNullValue="false" debug="true">
+    	<field-mapping srcName="id" srcClass="java.lang.String" targetName="id" targetClass="java.lang.String" defaultValue="0" convertor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
+    	<field-mapping srcName="name" srcLocatorClass="java.lang.String" targetName="id" targetClass="java.lang.String" targetLocatorClass="java.lang.String" defaultValue="0" convertor="stringToDate" script="idFormat.format()" mappingNullValue="true" trimStrings="true"/>
+    	<field-mapping mapping="true" nest="nestConfig" srcName="model" targetName="model" mappingNullValue="true" trimStrings="true" />
     </bean-mapping>
 </bean-mappings>

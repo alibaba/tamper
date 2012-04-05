@@ -15,6 +15,14 @@ public class BeanMappingObjectBuilder implements Builder<BeanMappingObject> {
 
     private BeanMappingObject object;
 
+    public BeanMappingObjectBuilder(String name, Class srcClass, Class targetClass, BeanMappingBehavior parent){
+        object = new BeanMappingObject();
+        object.setName(name);
+        object.setSrcClass(srcClass);
+        object.setTargetClass(targetClass);
+        object.setBehavior(parent.clone());
+    }
+
     public BeanMappingObjectBuilder(Class srcClass, Class targetClass, BeanMappingBehavior parent){
         object = new BeanMappingObject();
         object.setSrcClass(srcClass);

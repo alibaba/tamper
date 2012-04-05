@@ -1,5 +1,7 @@
 package com.agapple.mapping;
 
+import java.util.List;
+
 import com.agapple.mapping.core.BeanMappingException;
 import com.agapple.mapping.core.BeanMappingExecutor;
 import com.agapple.mapping.core.BeanMappingParam;
@@ -7,6 +9,7 @@ import com.agapple.mapping.core.builder.BeanMappingBuilder;
 import com.agapple.mapping.core.config.BeanMappingConfigHelper;
 import com.agapple.mapping.core.config.BeanMappingEnvironment;
 import com.agapple.mapping.core.config.BeanMappingObject;
+import com.agapple.mapping.core.helper.ContextObjectHolder;
 import com.agapple.mapping.core.process.ValueProcess;
 import com.agapple.mapping.process.script.ScriptHelper;
 
@@ -21,6 +24,10 @@ import com.agapple.mapping.process.script.ScriptHelper;
  *  
  *  注意：srcClass/targetClass的映射关系必须实现通过{@linkplain BeanMappingConfigHelper}的registerConfig方法注册mapping配置
  * </code>
+ * 
+ * changelog
+ *  v1.0.2 
+ *      mapping执行会有context的概念，缓存一下当前的一些执行信息
  * </pre>
  * 
  * @author jianghang 2011-6-8 上午11:10:24
@@ -29,12 +36,24 @@ public class BeanMapping {
 
     private BeanMappingObject config; // 对应的Bean Mapping配置
 
-    BeanMapping(BeanMappingObject config){
+    public BeanMapping(BeanMappingObject config){
         this.config = config;
     }
 
     public BeanMapping(BeanMappingBuilder builder){
         this.config = builder.get();
+    }
+
+    /**
+     * 创建指定name的BeanMapping操作
+     */
+    public static BeanMapping create(String mappingName) {
+        BeanMappingObject config = BeanMappingConfigHelper.getInstance().getBeanMappingObject(mappingName);
+        if (config == null) {
+            throw new BeanMappingException("can not found mapping config for name[" + mappingName + "]");
+        }
+
+        return new BeanMapping(config);
     }
 
     /**
@@ -58,17 +77,25 @@ public class BeanMapping {
      * @throws BeanMappingException
      */
     public void mapping(Object src, Object target) throws BeanMappingException {
+        boolean first = ContextObjectHolder.getInstance().enter();
+        boolean isBeanMappingSupportScript = BeanMappingEnvironment.isBeanMappingSupportScript();
         BeanMappingParam param = new BeanMappingParam();
         param.setSrcRef(src);
         param.setTargetRef(target);
         param.setConfig(this.config);
-        param.setProcesses(BeanMappingEnvironment.getBeanMappingVps());
+        List<ValueProcess> vps = BeanMappingEnvironment.getBeanMappingVps();
+        param.setProcesses(vps);
+
         // 执行mapping处理
         try {
             BeanMappingExecutor.execute(param);
         } finally {
-            ScriptHelper.getInstance().getScriptExecutor().disposeFunctions();// 清空记录
+            if (first) {// 第一个进入的负责清空数据，可能存在递归调用处理
+                ContextObjectHolder.getInstance().clear();
+                if (isBeanMappingSupportScript) {
+                    ScriptHelper.getInstance().getScriptExecutor().disposeFunctions();// 清空记录
+                }
+            }
         }
     }
-
 }

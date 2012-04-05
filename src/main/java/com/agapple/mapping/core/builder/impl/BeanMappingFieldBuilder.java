@@ -1,5 +1,6 @@
 package com.agapple.mapping.core.builder.impl;
 
+import com.agapple.mapping.core.builder.BeanMappingBuilder;
 import com.agapple.mapping.core.builder.Builder;
 import com.agapple.mapping.core.config.BeanMappingBehavior;
 import com.agapple.mapping.core.config.BeanMappingField;
@@ -97,6 +98,31 @@ public class BeanMappingFieldBuilder implements Builder<BeanMappingField> {
      */
     public BeanMappingFieldBuilder recursiveMapping(boolean mapping) {
         field.setMapping(mapping);
+        return this;
+    }
+
+    /**
+     * 设置是否需要进行递归mapping处理
+     */
+    public BeanMappingFieldBuilder recursiveMapping(boolean mapping, String nestname) {
+        field.setMapping(mapping);
+        field.setNestName(nestname);
+        return this;
+    }
+
+    /**
+     * 设置是进行递归mapping对象的name
+     */
+    public BeanMappingFieldBuilder nestName(String nestname) {
+        field.setNestName(nestname);
+        return this;
+    }
+
+    /**
+     * 设置是进行递归mapping对象
+     */
+    public BeanMappingFieldBuilder nestObject(BeanMappingBuilder nestBuilder) {
+        field.setNestObject(nestBuilder.get());
         return this;
     }
 

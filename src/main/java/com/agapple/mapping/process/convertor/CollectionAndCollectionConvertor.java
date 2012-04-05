@@ -16,10 +16,15 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.agapple.mapping.BeanCopy;
 import com.agapple.mapping.BeanMap;
 import com.agapple.mapping.BeanMapping;
 import com.agapple.mapping.core.BeanMappingException;
+import com.agapple.mapping.core.config.BeanMappingConfigHelper;
+import com.agapple.mapping.core.config.BeanMappingField;
+import com.agapple.mapping.core.config.BeanMappingObject;
 import com.agapple.mapping.core.helper.ReflectionHelper;
 
 /**
@@ -29,18 +34,23 @@ import com.agapple.mapping.core.helper.ReflectionHelper;
  */
 public class CollectionAndCollectionConvertor {
 
-    public static abstract class BaseCollectionConvertor extends AbastactConvertor {
+    public static abstract class BaseCollectionConvertor extends AbastactConvertor implements CollectionConvertor {
 
         @Override
         public Object convert(Object src, Class destClass) {
             return convertCollection(src, destClass, getComponentClass(src, destClass));
         }
 
+        public Object convertCollection(Object src, Class destClass, Class... componentClasses) {
+            return convertCollection(null, src, destClass, componentClasses);
+        }
+
         protected abstract Class getComponentClass(Object src, Class destClass);
 
-        protected MappingConfig initMapping(Class srcClass, Class targetClass, Class[] componentClasses) {
+        protected MappingConfig initMapping(BeanMappingField context, Class srcClass, Class targetClass,
+                                            Class[] componentClasses) {
             MappingConfig config = new MappingConfig();
-            // 1. 先找mapping配置中的映射
+            // 1. mapping配置中的映射
             // 2. 尝试处理下BeanCopy和BeanMap配置
             // 先找一次转化,可能是原始类型
             // 多级数组映射暂不考虑，TMD太复杂了，需要客户端自定义转化器
@@ -53,7 +63,23 @@ public class CollectionAndCollectionConvertor {
                 }
             } else {
                 try {
-                    config.beanMapping = BeanMapping.create(srcClass, targetClass);
+
+                    if (context != null) {// 如果存在上下文，说明是mapping内部递归调用
+                        BeanMappingObject object = context.getNestObject();
+                        if (object == null) {
+                            String nestname = context.getNestName();
+                            if (StringUtils.isNotEmpty(nestname)) {
+                                object = BeanMappingConfigHelper.getInstance().getBeanMappingObject(nestname);
+                                config.beanMapping = new BeanMapping(object);
+                            } else {
+                                config.beanMapping = BeanMapping.create(srcClass, targetClass);
+                            }
+                        } else {
+                            config.beanMapping = new BeanMapping(object);
+                        }
+                    } else {
+                        config.beanMapping = BeanMapping.create(srcClass, targetClass);
+                    }
                 } catch (BeanMappingException e) {
                     // 处理下分支2
                     boolean isSrcMap = Map.class.isAssignableFrom(srcClass);
@@ -78,8 +104,9 @@ public class CollectionAndCollectionConvertor {
         protected Object doMapping(Object src, Class targetClass, MappingConfig config) {
             Object newObj = null;
             if (config.convertor != null) {
-                if (config.componentClasses != null) {
-                    newObj = config.convertor.convertCollection(src, targetClass, config.componentClasses); // 处理递归嵌套
+                if (config.componentClasses != null && config.convertor instanceof CollectionConvertor) {
+                    newObj = ((CollectionConvertor) config.convertor).convertCollection(null, src, targetClass,
+                                                                                        config.componentClasses); // 处理递归嵌套
                 } else {
                     newObj = config.convertor.convert(src, targetClass);
                 }
@@ -166,7 +193,8 @@ public class CollectionAndCollectionConvertor {
      */
     public static class CollectionToCollection extends BaseCollectionConvertor {
 
-        public Object convertCollection(Object src, Class destClass, Class... componentClasses) {
+        public Object convertCollection(BeanMappingField context, Object src, Class destClass,
+                                        Class... componentClasses) {
             if (Collection.class.isAssignableFrom(src.getClass()) && Collection.class.isAssignableFrom(destClass)) { // 必须都是Collection
                 Collection collection = (Collection) src;
                 Collection target = createCollection(destClass);
@@ -179,13 +207,19 @@ public class CollectionAndCollectionConvertor {
                     componentClass = componentClasses[0];
                 }
 
+                boolean isForceMapping = false; // 如果不存在上线文，默认不做强制类型转化
+                if (context != null) {
+                    isForceMapping = (StringUtils.isNotEmpty(context.getNestName()) || context.getNestObject() != null);// 如果存在定义映射规则，则强制进行映射处理
+                }
+
                 for (Iterator iter = collection.iterator(); iter.hasNext();) {
                     Object item = iter.next();
                     Class componentSrcClass = item.getClass();
-                    if (componentClass != null && componentSrcClass != componentClass) {
+
+                    if (isForceMapping || componentClass != null && componentSrcClass != componentClass) {
                         if (isInit == false) {
                             isInit = true;
-                            config = initMapping(componentSrcClass, componentClass, componentClasses);
+                            config = initMapping(context, componentSrcClass, componentClass, componentClasses);
                         }
 
                         // 添加为mapping convertor
@@ -221,7 +255,8 @@ public class CollectionAndCollectionConvertor {
      */
     public static class ArrayToArray extends BaseCollectionConvertor {
 
-        public Object convertCollection(Object src, Class destClass, Class... componentClasses) {
+        public Object convertCollection(BeanMappingField context, Object src, Class destClass,
+                                        Class... componentClasses) {
             if (src.getClass().isArray() && destClass.isArray()) { // 特殊处理下数组
                 int size = Array.getLength(src);
                 Class componentSrcClass = src.getClass().getComponentType();
@@ -238,9 +273,13 @@ public class CollectionAndCollectionConvertor {
                     throw new BeanMappingException("error ComponentClasses config for [" + componentDestClass.getName()
                                                    + "] to [" + componentDestClass.getName() + "]");
                 }
+                boolean isForceMapping = false; // 如果不存在上线文，默认不做强制类型转化
+                if (context != null) {
+                    isForceMapping = (StringUtils.isNotEmpty(context.getNestName()) || context.getNestObject() != null);// 如果存在定义映射规则，则强制进行映射处理
+                }
 
-                if (componentClass != null && componentSrcClass != componentClass) { // 需要进行类型转化
-                    config = initMapping(componentSrcClass, componentDestClass, componentClasses);
+                if (isForceMapping || componentClass != null && componentSrcClass != componentClass) { // 需要进行类型转化
+                    config = initMapping(context, componentSrcClass, componentDestClass, componentClasses);
                 }
                 for (int i = 0; i < size; i++) {
                     Object obj = arrayGet(src, componentSrcClass, i);
@@ -271,7 +310,8 @@ public class CollectionAndCollectionConvertor {
      */
     public static class ArrayToCollection extends BaseCollectionConvertor {
 
-        public Object convertCollection(Object src, Class destClass, Class... componentClasses) {
+        public Object convertCollection(BeanMappingField context, Object src, Class destClass,
+                                        Class... componentClasses) {
             if (src.getClass().isArray() && Collection.class.isAssignableFrom(destClass)) { // 特殊处理下数组
                 Collection target = createCollection(destClass);
                 int size = Array.getLength(src);
@@ -283,8 +323,13 @@ public class CollectionAndCollectionConvertor {
                     componentClass = componentClasses[0];
                 }
 
-                if (componentClass != null && componentSrcClass != componentClass) { // 处理下类型转化
-                    config = initMapping(componentSrcClass, componentClass, componentClasses);
+                boolean isForceMapping = false; // 如果不存在上线文，默认不做强制类型转化
+                if (context != null) {
+                    isForceMapping = (StringUtils.isNotEmpty(context.getNestName()) || context.getNestObject() != null);// 如果存在定义映射规则，则强制进行映射处理
+                }
+
+                if (isForceMapping || componentClass != null && componentSrcClass != componentClass) { // 处理下类型转化
+                    config = initMapping(context, componentSrcClass, componentClass, componentClasses);
                 }
 
                 for (int i = 0; i < size; i++) {
@@ -318,7 +363,8 @@ public class CollectionAndCollectionConvertor {
      */
     public static class CollectionToArray extends BaseCollectionConvertor {
 
-        public Object convertCollection(Object src, Class destClass, Class... componentClasses) {
+        public Object convertCollection(BeanMappingField context, Object src, Class destClass,
+                                        Class... componentClasses) {
             if (Collection.class.isAssignableFrom(src.getClass()) && destClass.isArray()) {
                 Collection collection = (Collection) src;
                 Class componentDestClass = destClass.getComponentType();
@@ -336,13 +382,18 @@ public class CollectionAndCollectionConvertor {
                                                    + "] to [" + componentDestClass.getName() + "]");
                 }
 
+                boolean isForceMapping = false; // 如果不存在上线文，默认不做强制类型转化
+                if (context != null) {
+                    isForceMapping = (StringUtils.isNotEmpty(context.getNestName()) || context.getNestObject() != null);// 如果存在定义映射规则，则强制进行映射处理
+                }
+
                 int i = 0;
                 for (Iterator iter = collection.iterator(); iter.hasNext();) {
                     Object item = iter.next();
                     Class componentSrcClass = item.getClass();
-                    if (componentClass != null && componentSrcClass != componentDestClass) {
+                    if (isForceMapping || componentClass != null && componentSrcClass != componentDestClass) {
                         if (isInit == false) {
-                            config = initMapping(componentSrcClass, componentDestClass, componentClasses);
+                            config = initMapping(context, componentSrcClass, componentDestClass, componentClasses);
                         }
 
                         Object newObj = doMapping(item, componentDestClass, config);

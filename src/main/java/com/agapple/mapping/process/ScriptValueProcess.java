@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import com.agapple.mapping.core.BeanMappingException;
 import com.agapple.mapping.core.config.BeanMappingField;
 import com.agapple.mapping.core.config.BeanMappingObject;
+import com.agapple.mapping.core.helper.ContextObjectHolder;
 import com.agapple.mapping.core.process.ValueProcess;
 import com.agapple.mapping.core.process.ValueProcessInvocation;
 import com.agapple.mapping.process.script.ScriptExecutor;
@@ -20,21 +21,23 @@ import com.agapple.mapping.process.script.ScriptHelper;
  */
 public class ScriptValueProcess implements ValueProcess {
 
-    public final String SCRIPT_CONTEXT = "_script_context";
-
     @Override
     public Object process(Object value, ValueProcessInvocation invocation) throws BeanMappingException {
         BeanMappingField currentField = invocation.getContext().getCurrentField();
         if (StringUtils.isNotEmpty(currentField.getScript())) {
             BeanMappingObject beanObject = invocation.getContext().getBeanObject();
 
-            Map param = new HashMap();
-            param.put(beanObject.getSrcKey(), invocation.getContext().getParam().getSrcRef());
-            param.put(beanObject.getTargetKey(), invocation.getContext().getParam().getTargetRef());
+            Map param = (Map) ContextObjectHolder.getInstance().get(ContextObjectHolder.SCRIPT_CONTEXT);// 使用第一次记录的script_context
+            if (param == null) {
+                param = new HashMap();
+                param.put(beanObject.getSrcKey(), invocation.getContext().getParam().getSrcRef());
+                param.put(beanObject.getTargetKey(), invocation.getContext().getParam().getTargetRef());
+                ContextObjectHolder.getInstance().put(ContextObjectHolder.SCRIPT_CONTEXT, param);
+            }
 
             Map custom = invocation.getContext().getCustom();
-            if (custom != null && custom.containsKey(SCRIPT_CONTEXT)) {
-                Map newParam = (Map) custom.get(SCRIPT_CONTEXT);
+            if (custom != null && custom.containsKey(ContextObjectHolder.SCRIPT_CONTEXT)) {
+                Map newParam = (Map) custom.get(ContextObjectHolder.SCRIPT_CONTEXT);
                 param.putAll(newParam);
             }
 
