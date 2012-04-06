@@ -335,6 +335,24 @@ public class BeanMappingDymaicTest extends TestCase {
     }
 
     @Test
+    public void testNullSymbol() { // 测试下null的特殊属性
+        BeanMappingBuilder builder = new BeanMappingBuilder() {
+
+            protected void configure() {
+                behavior().debug(true).mappingEmptyStrings(false).mappingNullValue(false).trimStrings(true);// 设置行为
+                mapping(HashMap.class, HashMap.class);
+                fields(srcField("null"), targetField(ONE_OTHER, String.class)).defaultValue("10");
+            }
+
+        };
+
+        BeanMapping mapping = new BeanMapping(builder);
+        Map dest = new HashMap();
+        mapping.mapping(new HashMap(), dest);
+        assertEquals(dest.get(ONE_OTHER), "10");
+    }
+
+    @Test
     public void testCollectionNestedMapping() { // 测试下collection的mapping
         BeanMappingBuilder builder = new BeanMappingBuilder() {
 

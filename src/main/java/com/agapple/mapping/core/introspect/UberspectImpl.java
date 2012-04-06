@@ -55,6 +55,12 @@ public class UberspectImpl implements Uberspect {
             }
         }
 
+        // 尝试一下特殊符号，比如"null"
+        NullSymbolGetExecutor nExecutor = new NullSymbolGetExecutor(getIntrospector(), clazz, property);
+        if (nExecutor.isAlive()) {
+            return nExecutor;
+        }
+
         // 尝试一下特殊符号，比如"this"
         ThisSymbolGetExecutor sExecutor = new ThisSymbolGetExecutor(getIntrospector(), clazz, property);
         if (sExecutor.isAlive()) {
