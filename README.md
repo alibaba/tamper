@@ -1,12 +1,5 @@
 ##Introduction
 
-homepage:  https://github.com/alibaba/tamper/
-
-wiki :     https://github.com/alibaba/tamper/wiki
-
-author : agapple(jianghang115@gmail.com)
-
-
 tamper是一款处理bean/map进行属性复制映射的工具，支持递归，集合等深度映射. 
 
 ##Why need tamper
@@ -148,3 +141,9 @@ mapping.mapping(src, dest);//使用</pre>
 
 
 More information see wiki pages please.
+
+homepage:  https://github.com/alibaba/tamper/
+
+wiki :     https://github.com/alibaba/tamper/wiki
+
+author : agapple(jianghang115@gmail.com)
