@@ -4,9 +4,9 @@
 	<artifactId>mapping</artifactId>
 	<version>1.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>mapping4java</name>
-	<url>http://code.google.com/p/mapping4java</url>
-	<description>googlecode mapping4java project as open source.</description>
+	<name>mapping</name>
+	<url>https://github.com/alibaba/mapping</url>
+	<description>github mapping project as open source.</description>
 	
 	<parent>
 	    <groupId>org.sonatype.oss</groupId>
@@ -31,9 +31,9 @@
 	</licenses>
 
 	<scm>
-		<url>git@github.com:agapple/mapping4java.git</url>
-		<connection>scm:git:git@github.com:agapple/mapping4java.git</connection>
-		<developerConnection>scm:git:git@github.com:agapple/mapping4java.git</developerConnection>
+		<url>git@github.com:alibaba/mapping.git</url>
+		<connection>scm:git:git@github.com:alibaba/mapping.git</connection>
+		<developerConnection>scm:git:git@github.com:alibaba/mapping.git</developerConnection>
 	</scm>
 	
 	<repositories>
