@@ -46,6 +46,7 @@ TODO:
       mvn test
 
 <h2>Example1：</h2>
+<h3>自定义映射规则，处理bean/map &lt;-&gt; bean/map</h3>
 <h3>Step 1 (define mapping config)</h3>
 <pre name="code" class="java">&lt;bean-mappings xmlns="http://mapping4java.googlecode.com/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
         xsi:schemaLocation="http://mapping4java.googlecode.com/schema/mapping http://mapping4java.googlecode.com/svn/trunk/src/main/resources/META-INF/mapping.xsd"&gt;  
@@ -118,6 +119,28 @@ public BeanMapping targetMapping = BeanMapping.create(TargetMappingObject.class 
         SrcMappingObject newSrcRef = new SrcMappingObject();// 反过来再mapping一次
         beanMap.populate(newSrcRef, map);
     }</pre>
+<h2>Example4：</h2>
+<h3>Mapping API定义映射</h3>
+<pre name="code" class="java">BeanMappingBuilder builder = new BeanMappingBuilder() {
+
+            protected void configure() {
+                mapping(HashMap.class, HashMap.class).batch(false).reversable(true).keys("src", "target");
+                fields(srcField("one"), targetField("oneOther")).convertor("convertor").defaultValue("ljh");
+                fields(srcField("two").clazz(String.class), targetField("twoOther")).script("1+2").convertor(
+                                                                                                             StringToCommon.class);
+                fields(srcField("three").clazz(ArrayList.class), targetField("threeOther").clazz(HashSet.class)).recursiveMapping(
+                                                                                                                                  true);
+            }
+
+        };</pre>
+        
+<p>通过builder可以比较方便的构造mapping config，最后需要生成mapping实例，还需要做一步： </p>
+<pre class="prettyprint">BeanMapping mapping = new BeanMapping(builder);
+mapping.mapping(src, dest);//使用</pre>
+<p>or  </p>
+<pre class="prettyprint">BeanMappingConfigHelper.getInstance().register(builder); // 进行注册
+BeanMappingObject object = BeanMappingConfigHelper.getInstance().getBeanMappingObject(srcClass,targetClass);
+mapping.mapping(src, dest);//使用</pre>
 
 
 More information see wiki pages please.
