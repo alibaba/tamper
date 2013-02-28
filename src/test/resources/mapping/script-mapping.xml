@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="GBK"?>
-<bean-mappings xmlns="https://github.com/alibaba/mapping/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://github.com/alibaba/mapping/schema/mapping https://raw.github.com/alibaba/mapping/master/src/main/resources/META-INF/mapping.xsd">
+<bean-mappings xmlns="https://github.com/alibaba/tamper/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/alibaba/tamper/schema/mapping https://raw.github.com/alibaba/tamper/master/src/main/resources/META-INF/mapping.xsd">
     
     <!--  bean script测试, map转化到object -->
-    <bean-mapping srcClass="com.alibaba.mapping.object.SrcMappingObject" targetClass="map" debug="true">
+    <bean-mapping srcClass="com.alibaba.tamper.object.SrcMappingObject" targetClass="map" debug="true">
     	<field-mapping targetName="integerValue" script="src.integerValue" defaultValue="1" targetClass="int" />
     	<field-mapping targetName="intValue" script="src.intValue + target.integerValue" />
     	<field-mapping targetName="start" script="src.start"/>
@@ -11,12 +11,12 @@
     	<field-mapping srcName="mapping" targetName="mapping" mapping="true" />
     </bean-mapping>
     
-    <bean-mapping srcClass="com.alibaba.mapping.object.NestedSrcMappingObject" targetClass="map" debug="true">
+    <bean-mapping srcClass="com.alibaba.tamper.object.NestedSrcMappingObject" targetClass="map" debug="true">
     	<field-mapping targetName="name" script="src.name" defaultValue="ljh" /> <!-- 测试default value -->
     	<field-mapping targetName="value" script="src.bigDecimalValue" targetClass="string" defaultValue="10" /> <!-- 测试不同名+不同类型+default value  -->
     </bean-mapping>
     
-    <bean-mapping srcClass="map" targetClass="com.alibaba.mapping.object.SrcMappingObject" debug="true">
+    <bean-mapping srcClass="map" targetClass="com.alibaba.tamper.object.SrcMappingObject" debug="true">
     	<field-mapping targetName="integerValue" script="src.integerValue" defaultValue="1"/>
     	<field-mapping targetName="intValue" script="src.intValue + src.integerValue" />
     	<field-mapping targetName="start" script="src.start"/>
@@ -24,12 +24,12 @@
     	<field-mapping srcName="mapping" targetName="mapping" mapping="true" />
     </bean-mapping>
     
-    <bean-mapping srcClass="map" targetClass="com.alibaba.mapping.object.NestedSrcMappingObject" debug="true">
+    <bean-mapping srcClass="map" targetClass="com.alibaba.tamper.object.NestedSrcMappingObject" debug="true">
     	<field-mapping targetName="name" script="src.name" defaultValue="ljh" /> <!-- 测试default value -->
     	<field-mapping targetName="bigDecimalValue" script="src.value" targetClass="string" defaultValue="10" /> <!-- 测试不同名+不同类型+default value  -->
     </bean-mapping>
     
-    <bean-mapping srcClass="map" targetClass="com.alibaba.mapping.object.NestedTargetMappingObject">
+    <bean-mapping srcClass="map" targetClass="com.alibaba.tamper.object.NestedTargetMappingObject">
     	<field-mapping targetName="name" script="src.name" defaultValue="ljh" /> <!-- 测试default value -->
     	<field-mapping targetName="value" script="src.value" targetClass="string" defaultValue="10" /> <!-- 测试不同名+不同类型+default value  -->
     </bean-mapping>

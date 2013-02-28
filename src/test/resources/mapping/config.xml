@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="GBK"?>
-<bean-mappings xmlns="https://github.com/alibaba/mapping/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://github.com/alibaba/mapping/schema/mapping https://raw.github.com/alibaba/mapping/master/src/main/resources/META-INF/mapping.xsd">
+<bean-mappings xmlns="https://github.com/alibaba/tamper/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/alibaba/tamper/schema/mapping https://raw.github.com/alibaba/tamper/master/src/main/resources/META-INF/mapping.xsd">
     
     <global-configurations debug="false" mappingNullValue="true" mappingEmptyStrings="true" trimStrings="true" />
     
@@ -9,11 +9,11 @@
     </convertors-configurations>
     
     <class-alias-configurations>
-    	<classAlias alias="commonClass" class="com.alibaba.mapping.process.convertor.CommonAndCommonConvertor$CommonToCommon" />
+    	<classAlias alias="commonClass" class="com.alibaba.tamper.process.convertor.CommonAndCommonConvertor$CommonToCommon" />
     </class-alias-configurations>
     
     <function-class-configurations>
-    	<functionClass name="customFunction" class="com.alibaba.mapping.script.CustomFunctionClass" />
+    	<functionClass name="customFunction" class="com.alibaba.tamper.script.CustomFunctionClass" />
     </function-class-configurations>
     
     <bean-mapping name="nestConfig" srcClass="map" targetClass="java.util.HashMap" reversable="false" mappingNullValue="false" debug="true">

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="GBK"?>
-<bean-mappings xmlns="https://github.com/alibaba/mapping/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://github.com/alibaba/mapping/schema/mapping https://raw.github.com/alibaba/mapping/master/src/main/resources/META-INF/mapping.xsd">
+<bean-mappings xmlns="https://github.com/alibaba/tamper/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/alibaba/tamper/schema/mapping https://raw.github.com/alibaba/tamper/master/src/main/resources/META-INF/mapping.xsd">
     
     <global-configurations debug="true"/>
     
     <!--  (bean-bean) mapping 测试 -->
-    <bean-mapping batch="true" srcClass="com.alibaba.mapping.object.SrcMappingObject" targetClass="com.alibaba.mapping.object.TargetMappingObject" reversable="true">
+    <bean-mapping batch="true" srcClass="com.alibaba.tamper.object.SrcMappingObject" targetClass="com.alibaba.tamper.object.TargetMappingObject" reversable="true">
     	<field-mapping srcName="intValue" targetName="intValue" />
     	<field-mapping srcName="integerValue" targetName="integerValue" />
     	<field-mapping srcName="start" targetName="start" />
@@ -13,20 +13,20 @@
     	<field-mapping srcName="mapping" targetName="mapping" mapping="true" />
     </bean-mapping>
     
-    <bean-mapping batch="true" srcClass="com.alibaba.mapping.object.NestedSrcMappingObject" targetClass="com.alibaba.mapping.object.NestedTargetMappingObject" reversable="true">
+    <bean-mapping batch="true" srcClass="com.alibaba.tamper.object.NestedSrcMappingObject" targetClass="com.alibaba.tamper.object.NestedTargetMappingObject" reversable="true">
     	<field-mapping srcName="name" targetName="name" defaultValue="ljh" /> <!-- 测试default value -->
     	<field-mapping srcName="bigDecimalValue" targetName="value" targetClass="string" defaultValue="10" /> <!-- 测试不同名+不同类型+default value  -->
     </bean-mapping>
     
      <!--  (bean-map) mapping 测试 -->
-     <bean-mapping batch="true" srcClass="com.alibaba.mapping.object.SrcMappingObject" targetClass="map" reversable="true">
+     <bean-mapping batch="true" srcClass="com.alibaba.tamper.object.SrcMappingObject" targetClass="map" reversable="true">
     	<field-mapping srcName="intValue" targetName="intValue" />
     	<field-mapping srcName="integerValue" targetName="integerValue" targetClass="java.math.BigInteger" defaultValue="1"/> <!-- 测试转化为不同的类型转化 -->
     	<field-mapping srcName="start" targetName="start" />
     	<field-mapping srcName="name" targetName="targetName" /> <!--  注意不同名 -->
     	<field-mapping srcName="mapping" targetName="mapping" mapping="true" />
     </bean-mapping>
-    <bean-mapping batch="true" srcClass="com.alibaba.mapping.object.NestedSrcMappingObject" targetClass="map" reversable="true">
+    <bean-mapping batch="true" srcClass="com.alibaba.tamper.object.NestedSrcMappingObject" targetClass="map" reversable="true">
     	<field-mapping srcName="name" targetName="name" defaultValue="ljh" /> <!-- 测试default value -->
     	<field-mapping srcName="bigDecimalValue" targetName="value" targetClass="string" defaultValue="10" /> <!-- 测试不同名+不同类型+default value  -->
     </bean-mapping>

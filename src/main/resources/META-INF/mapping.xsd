@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="GBK"?>
-<xs:schema targetNamespace="https://github.com/alibaba/mapping/schema/mapping" xmlns="https://github.com/alibaba/mapping/schema/mapping" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema targetNamespace="https://github.com/alibaba/tamper/schema/mapping" xmlns="https://github.com/alibaba/tamper/schema/mapping" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
 	<xs:element name="bean-mappings">
         <xs:annotation>
