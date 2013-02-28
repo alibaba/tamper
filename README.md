@@ -1,10 +1,8 @@
 ##Introduction
 
-homepage:  http://code.google.com/p/mapping4java/
+homepage:  https://github.com/alibaba/mapping/
 
-downloads; http://code.google.com/p/mapping4java/downloads/list
-
-wiki :     http://code.google.com/p/mapping4java/w/list
+wiki :     https://github.com/alibaba/mapping/wiki
 
 author : agapple(jianghang115@gmail.com)
 
@@ -47,45 +45,102 @@ TODO:
 
       mvn test
 
-##Example
+<h2>Example1：</h2>
+<h3>自定义映射规则，处理bean/map &lt;-&gt; bean/map</h3>
+<h3>Step 1 (define mapping config)</h3>
+<pre name="code" class="java">&lt;bean-mappings xmlns="http://mapping4java.googlecode.com/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+        xsi:schemaLocation="http://mapping4java.googlecode.com/schema/mapping http://mapping4java.googlecode.com/svn/trunk/src/main/resources/META-INF/mapping.xsd"&gt;  
+        &lt;!--  (bean-bean) mapping 测试 --&gt;  
+        &lt;bean-mapping batch="true" srcClass="com.agapple.mapping.object.SrcMappingObject" targetClass="com.agapple.mapping.object.TargetMappingObject" reversable="true"&gt;  
+            &lt;field-mapping srcName="intValue" targetName="intValue" /&gt;  
+            &lt;field-mapping targetName="integerValue" script="src.intValue + src.integerValue" /&gt; &lt;!-- 测试script --&gt;  
+            &lt;field-mapping srcName="start" targetName="start" /&gt;  
+            &lt;field-mapping srcName="name" targetName="targetName" /&gt; &lt;!--  注意不同名 --&gt;  
+            &lt;field-mapping srcName="mapping" targetName="mapping" mapping="true" /&gt;  
+        &lt;/bean-mapping&gt;  
 
-##Step 1 (define mapping config)
-		<bean-mappings xmlns="http://mapping4java.googlecode.com/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-			xsi:schemaLocation="http://mapping4java.googlecode.com/schema/mapping http://mapping4java.googlecode.com/svn/trunk/src/main/resources/META-INF/mapping.xsd">  
-			<!--  (bean-bean) mapping 测试 -->  
-			<bean-mapping batch="true" srcClass="com.agapple.mapping.object.SrcMappingObject" targetClass="com.agapple.mapping.object.TargetMappingObject" reversable="true">  
-				<field-mapping srcName="intValue" targetName="intValue" />  
-				<field-mapping targetName="integerValue" script="src.intValue + src.integerValue" /> <!-- 测试script -->  
-				<field-mapping srcName="start" targetName="start" />  
-				<field-mapping srcName="name" targetName="targetName" /> <!--  注意不同名 -->  
-				<field-mapping srcName="mapping" targetName="mapping" mapping="true" />  
-			</bean-mapping>  
-			  
-			<bean-mapping batch="true" srcClass="com.agapple.mapping.object.NestedSrcMappingObject" targetClass="com.agapple.mapping.object.NestedTargetMappingObject" reversable="true">  
-				<field-mapping srcName="name" targetName="name" defaultValue="ljh" /> <!-- 测试default value -->  
-				<field-mapping srcName="bigDecimalValue" targetName="value" targetClass="string" defaultValue="10" /> <!-- 测试不同名+不同类型+default value  -->  
-			</bean-mapping>  
-		  
-		</bean-mappings>
+        &lt;bean-mapping batch="true" srcClass="com.agapple.mapping.object.NestedSrcMappingObject" targetClass="com.agapple.mapping.object.NestedTargetMappingObject" reversable="true"&gt;  
+            &lt;field-mapping srcName="name" targetName="name" defaultValue="ljh" /&gt; &lt;!-- 测试default value --&gt;  
+            &lt;field-mapping srcName="bigDecimalValue" targetName="value" targetClass="string" defaultValue="10" /&gt; &lt;!-- 测试不同名+不同类型+default value  --&gt;  
+        &lt;/bean-mapping&gt;  
 
-##Step 2 (do mapping)
+    &lt;/bean-mappings&gt;</pre>
+<h3>Step 2 (do mapping) </h3>
+<pre name="code" class="java">public BeanMapping srcMapping    = BeanMapping.create(SrcMappingObject.class, TargetMappingObject.class);  
+public BeanMapping targetMapping = BeanMapping.create(TargetMappingObject.class , SrcMappingObject.class);  
 
-        public BeanMapping srcMapping    = BeanMapping.create(SrcMappingObject.class, TargetMappingObject.class);  
-		public BeanMapping targetMapping = BeanMapping.create(TargetMappingObject.class , SrcMappingObject.class);  
-		  
-		@Test  
-		public void testBeanToBean_ok() {  
-			SrcMappingObject srcRef = new SrcMappingObject();  
-			srcRef.setIntegerValue(1);  
-			srcRef.setIntValue(1);  
-			srcRef.setName("ljh");  
-			srcRef.setStart(true);  
-		  
-			TargetMappingObject targetRef = new TargetMappingObject();// 测试一下mapping到一个Object对象  
-			srcMapping.mapping(srcRef, targetRef);  
-		  
-			SrcMappingObject newSrcRef = new SrcMappingObject();// 反过来再mapping一次  
-			targetMapping.mapping(targetRef, newSrcRef);  
-		}
+    @Test  
+    public void testBeanToBean_ok() {  
+        SrcMappingObject srcRef = new SrcMappingObject();  
+        srcRef.setIntegerValue(1);  
+        srcRef.setIntValue(1);  
+        srcRef.setName("ljh");  
+        srcRef.setStart(true);  
+
+        TargetMappingObject targetRef = new TargetMappingObject();// 测试一下mapping到一个Object对象  
+        srcMapping.mapping(srcRef, targetRef);  
+
+        SrcMappingObject newSrcRef = new SrcMappingObject();// 反过来再mapping一次  
+        targetMapping.mapping(targetRef, newSrcRef);  
+    }</pre>
+<h2 style="font-size: 1.5em;">Example2： </h2>
+<h3>类似于BeanUtils/BeanCopier，根据同名属性进行自动映射，不需要定义任何的mapping.xml</h3>
+<pre name="code" class="java">public BeanCopy srcCopy    = BeanCopy.create(SrcMappingObject.class, TargetMappingObject.class);  
+    public BeanCopy targetCopy = BeanCopy.create(TargetMappingObject.class , SrcMappingObject.class);  
+
+    @Test  
+    public void testBeanToBean_ok() {  
+        SrcMappingObject srcRef = new SrcMappingObject();  
+        srcRef.setIntegerValue(1);  
+        srcRef.setIntValue(1);  
+        srcRef.setName("ljh");  
+        srcRef.setStart(true);  
+
+        TargetMappingObject targetRef = new TargetMappingObject();// 测试一下mapping到一个Object对象  
+        srcCopy.copy(srcRef, targetRef);  
+
+        SrcMappingObject newSrcRef = new SrcMappingObject();// 反过来再mapping一次  
+        targetCopy.copy(targetRef, newSrcRef);  
+    }</pre>
+<h2 style="font-size: 1.5em;">Example3： </h2>
+<h3>类似于BeanUtils，处理map&lt;-&gt;bean</h3>
+<pre name="code" class="java"><span style="white-space: normal;"> <span style="white-space: pre;">public BeanMap beanMap = BeanMap.create(SrcMappingObject.class);
+</span></span>
+    @Test
+    public void testDescribe_Populate_ok() {
+        SrcMappingObject srcRef = new SrcMappingObject();
+        srcRef.setIntegerValue(1);
+        srcRef.setIntValue(1);
+        srcRef.setName("ljh");
+        srcRef.setStart(true);
+
+        Map map = beanMap.describe(srcRef);
+        
+        SrcMappingObject newSrcRef = new SrcMappingObject();// 反过来再mapping一次
+        beanMap.populate(newSrcRef, map);
+    }</pre>
+<h2>Example4：</h2>
+<h3>Mapping API定义映射</h3>
+<pre name="code" class="java">BeanMappingBuilder builder = new BeanMappingBuilder() {
+
+            protected void configure() {
+                mapping(HashMap.class, HashMap.class).batch(false).reversable(true).keys("src", "target");
+                fields(srcField("one"), targetField("oneOther")).convertor("convertor").defaultValue("ljh");
+                fields(srcField("two").clazz(String.class), targetField("twoOther")).script("1+2").convertor(
+                                                                                                             StringToCommon.class);
+                fields(srcField("three").clazz(ArrayList.class), targetField("threeOther").clazz(HashSet.class)).recursiveMapping(
+                                                                                                                                  true);
+            }
+
+        };</pre>
+        
+<p>通过builder可以比较方便的构造mapping config，最后需要生成mapping实例，还需要做一步： </p>
+<pre class="prettyprint">BeanMapping mapping = new BeanMapping(builder);
+mapping.mapping(src, dest);//使用</pre>
+<p>or  </p>
+<pre class="prettyprint">BeanMappingConfigHelper.getInstance().register(builder); // 进行注册
+BeanMappingObject object = BeanMappingConfigHelper.getInstance().getBeanMappingObject(srcClass,targetClass);
+mapping.mapping(src, dest);//使用</pre>
+
 
 More information see wiki pages please.
