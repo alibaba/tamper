@@ -1,21 +1,17 @@
 ##Introduction
 
-homepage:  https://github.com/alibaba/mapping/
+tamper是一款处理bean/map进行属性复制映射的工具，支持递归，集合等深度映射. 
 
-wiki :     https://github.com/alibaba/mapping/wiki
+##Why need tamper
 
-author : agapple(jianghang115@gmail.com)
-
-##Why need mapping
-
-这里列觉了几种需要使用mapping的场景：
+这里列觉了几种需要使用tamper的场景：
 
 * model 和 DO的转化 (DO = Data Object , 数据库对象的设计是一种大宽表的设计，domain/model的设计，会有层次结构&具体)。 比如表设计存储会采用json存储动态数据，而在model中会是具体的属性
 * model 和 VO的转化 (VO = View Object , 公司的产品detail页面，涉及了后端n多个domain/model的组合展示，这时候会进行包装成VO，包装一些页面组装逻辑)
 * model 和 DTO的转化 (DTO = Data Transfer Object ，公司子系统比较多，系统之间会有比较多的rpc等remote调用)
 * form -> bean的转化 (现在流行的几个MVC框架，都已经开始支持view层的参数注入，比如@Paramter(name="field")String , @Form("name=xx")Bean)。 提交的form表单数据，基本都是以map+list为主，就会涉及一个mapping
 
-##Why BeanMapping
+##Why tamper
 * 解决BeanUtils, BeanCopier?使用上的局限，只能针对同名属性的拷贝
 * 相比于BeanUtils，性能提升是它的优势
 * 相比于BeanCopier，类型之间的convertor是它的优势
@@ -48,8 +44,9 @@ TODO:
 <h2>Example1：</h2>
 <h3>自定义映射规则，处理bean/map &lt;-&gt; bean/map</h3>
 <h3>Step 1 (define mapping config)</h3>
-<pre name="code" class="java">&lt;bean-mappings xmlns="http://mapping4java.googlecode.com/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-        xsi:schemaLocation="http://mapping4java.googlecode.com/schema/mapping http://mapping4java.googlecode.com/svn/trunk/src/main/resources/META-INF/mapping.xsd"&gt;  
+<pre name="code" class="java">
+bean-mappings xmlns="https://github.com/alibaba/tamper/schema/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/alibaba/tamper/schema/mapping https://raw.github.com/alibaba/tamper/master/src/main/resources/META-INF/mapping.xsd"&gt;  
         &lt;!--  (bean-bean) mapping 测试 --&gt;  
         &lt;bean-mapping batch="true" srcClass="com.agapple.mapping.object.SrcMappingObject" targetClass="com.agapple.mapping.object.TargetMappingObject" reversable="true"&gt;  
             &lt;field-mapping srcName="intValue" targetName="intValue" /&gt;  
@@ -144,3 +141,9 @@ mapping.mapping(src, dest);//使用</pre>
 
 
 More information see wiki pages please.
+
+homepage:  https://github.com/alibaba/tamper/
+
+wiki :     https://github.com/alibaba/tamper/wiki
+
+author : agapple(jianghang115@gmail.com)
