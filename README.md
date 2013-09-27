@@ -25,7 +25,11 @@ tamper是一款处理bean/map进行属性复制映射的工具，支持递归，
 
 ##Maven repository
 
-TODO: 
+<pre name="wiki-code" class="java">&lt;dependency&gt;
+&nbsp;&nbsp;&nbsp;&lt;groupId&gt;com.alibaba.tamper&lt;/groupId&gt;
+&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;tamper&lt;/artifactId&gt;
+&nbsp;&nbsp;&nbsp;&lt;version&gt;1.0.3&lt;/version&gt;
+&lt;/dependency&gt;</pre>
 
 ##FAQ
 
