@@ -7,13 +7,13 @@
 	<name>tamper</name>
 	<url>https://github.com/alibaba/tamper</url>
 	<description>github tamper project as open source.</description>
-	
+
 	<parent>
 	    <groupId>org.sonatype.oss</groupId>
 	    <artifactId>oss-parent</artifactId>
 	    <version>7</version>
 	</parent>
-  
+
 	<developers>
 		<developer>
 			<name>agapple</name>
@@ -35,7 +35,7 @@
 		<connection>scm:git:git@github.com:alibaba/tamper.git</connection>
 		<developerConnection>scm:git:git@github.com:alibaba/tamper.git</developerConnection>
 	</scm>
-	
+
 	<repositories>
 		<repository>
 			<id>java.net</id>
@@ -58,7 +58,7 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!--maven properties-->
@@ -71,7 +71,7 @@
 	</properties>
 
 	<dependencies>
-		
+
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
@@ -102,11 +102,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-jexl</artifactId>
 			<version>2.0.1</version>
-			<!-- 
+			<!--
 			<scope>provided</scope>
 			 -->
 		</dependency>
-		<!-- 
+		<!--
 		<dependency>
 		     <groupId>com.alibaba</groupId>
 		     <artifactId>SimpleEL</artifactId>
@@ -245,8 +245,23 @@
 					<javadocDir>${project.basedir}/docs/javadoc</javadocDir>
 				</configuration>
 			</plugin>
+			<plugin>
+			   <groupId>org.apache.maven.plugins</groupId>
+			   <artifactId>maven-eclipse-plugin</artifactId>
+			   <version>2.5.1</version>
+			   <configuration>
+				  <additionalConfig>
+					 <file>
+						<name>.settings/org.eclipse.core.resources.prefs</name>
+						<content>
+						   <![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${file_encoding}${line.separator}]]>
+						</content>
+					 </file>
+				  </additionalConfig>
+			   </configuration>
+			</plugin>
 		</plugins>
-		<sourceDirectory>src/main/java</sourceDirectory>  
+		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<resources>
 			<resource>
@@ -271,7 +286,7 @@
 			</testResource>
 		</testResources>
 	</build>
-	
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>sonatype-nexus-snapshots</id>
