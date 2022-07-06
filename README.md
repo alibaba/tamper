@@ -1,17 +1,17 @@
-## Introduction
+## Introduction 【介绍】
 
 tamper是一款处理bean/map进行属性复制映射的工具，支持递归，集合等深度映射.
 
-## Why need tamper
+## Why need tamper 【为什么需要tamper】
 
-这里列觉了几种需要使用tamper的场景：
+这里列举了几种需要使用tamper的场景：
 
 * model 和 DO的转化 (DO = Data Object , 数据库对象的设计是一种大宽表的设计，domain/model的设计，会有层次结构&具体)。 比如表设计存储会采用json存储动态数据，而在model中会是具体的属性
 * model 和 VO的转化 (VO = View Object , 公司的产品detail页面，涉及了后端n多个domain/model的组合展示，这时候会进行包装成VO，包装一些页面组装逻辑)
 * model 和 DTO的转化 (DTO = Data Transfer Object ，公司子系统比较多，系统之间会有比较多的rpc等remote调用)
 * form -> bean的转化 (现在流行的几个MVC框架，都已经开始支持view层的参数注入，比如@Paramter(name="field")String , @Form("name=xx")Bean)。 提交的form表单数据，基本都是以map+list为主，就会涉及一个mapping
 
-## Why tamper
+## Why tamper 【为何选tamper】
 * 解决BeanUtils, BeanCopier?使用上的局限，只能针对同名属性的拷贝
 * 相比于BeanUtils，性能提升是它的优势
 * 相比于BeanCopier，类型之间的convertor是它的优势
@@ -23,7 +23,7 @@ tamper是一款处理bean/map进行属性复制映射的工具，支持递归，
 * script脚本支持 (EL表达式处理)
 * bean creator(嵌套对象自动创建)
 
-## Maven repository
+## Maven repository 【maven 仓库】
 
 <pre name="wiki-code" class="java">&lt;dependency&gt;
 &nbsp;&nbsp;&nbsp;&lt;groupId&gt;com.alibaba.tamper&lt;/groupId&gt;
@@ -31,7 +31,7 @@ tamper是一款处理bean/map进行属性复制映射的工具，支持递归，
 &nbsp;&nbsp;&nbsp;&lt;version&gt;1.0.3&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 
-## FAQ
+## FAQ 【问题解答】
 
 1.How to import to eclipse by maven?
 
