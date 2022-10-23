@@ -1,6 +1,6 @@
 package com.alibaba.tamper;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -25,8 +25,8 @@ public class ConfigTest extends TestCase {
     public void testFileParse() {
         String file = "mapping/config.xml";
         BeanMappingConfigHelper.getInstance().registerConfig(file);
-        BeanMappingObject object = BeanMappingConfigHelper.getInstance().getBeanMappingObject(HashMap.class,
-                                                                                              HashMap.class);
+        BeanMappingObject object = BeanMappingConfigHelper.getInstance().getBeanMappingObject(LinkedHashMap.class,
+                                                                                              LinkedHashMap.class);
         assertNull(object);
         object = BeanMappingConfigHelper.getInstance().getBeanMappingObject("testConfig");
         printObject(object);
