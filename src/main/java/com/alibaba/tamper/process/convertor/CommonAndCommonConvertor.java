@@ -118,7 +118,7 @@ public class CommonAndCommonConvertor {
                                                    + targetClass.getName());
                 }
 
-                if (doubleValue < Float.MIN_VALUE) {
+                if (doubleValue < -Float.MAX_VALUE) {
                     throw new BeanMappingException(srcClass.getName() + " value '" + value + "' is too small for "
                                                    + targetClass.getName());
                 }

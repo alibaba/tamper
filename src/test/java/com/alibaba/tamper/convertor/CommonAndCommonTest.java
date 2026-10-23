@@ -171,6 +171,17 @@ public class CommonAndCommonTest extends TestCase {
     }
 
     @Test
+    public void testDoubleToFloatNegativeAndZero() {
+        Convertor convertor = helper.getConvertor(Double.class, float.class);
+
+        assertEquals(Float.valueOf(-1.5f), convertor.convert(-1.5d, float.class));
+        assertEquals(Float.valueOf(0.0f), convertor.convert(0.0d, float.class));
+        assertEquals(Float.valueOf(-0.0f), convertor.convert(-0.0d, float.class));
+        assertEquals(Float.valueOf(-Float.MAX_VALUE),
+                     convertor.convert(-(double) Float.MAX_VALUE, float.class));
+    }
+
+    @Test
     public void testFloat() {
         float value = 10;
         Object integerValue = helper.getConvertor(Float.class, Integer.class).convert(value, Integer.class);
@@ -438,6 +449,12 @@ public class CommonAndCommonTest extends TestCase {
 
         try {
             helper.getConvertor(Double.class, float.class).convert(maxDouble, float.class);
+            Assert.fail();// 不会走到这一步
+        } catch (BeanMappingException e) {
+        }
+
+        try {
+            helper.getConvertor(Double.class, float.class).convert(-maxDouble, float.class);
             Assert.fail();// 不会走到这一步
         } catch (BeanMappingException e) {
         }
